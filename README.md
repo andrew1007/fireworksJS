@@ -2,12 +2,11 @@
 
 A simulation of fireworks is planned with the following features that will be available to users:
 
-- [ ] Select colors or have the option of randomized colors
 - [ ] Click on any position of the canvas to fire off a firework
+- [ ] Randomized colors
 
 In addition, this project will include:
 
-- [ ] A color picker dropdown and ticker for randomize colors
 - [ ] A production Readme
 
 ### Wireframes
@@ -16,7 +15,7 @@ This app will consist of a single screen with a color picker and a small snippet
 
 ![Wireframe][wireframe]
 
-[wireframe]: ./Images/Wireframe.png
+[welcome]: ./docs/images/welcome.png
 ### Architecture and Technologies
 
 This project will be implemented with the following technologies
