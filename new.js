@@ -58,7 +58,7 @@
 	  }
 	
 	  addFirework(e) {
-	    e.preventDefault();
+	    // e.preventDefault()
 	    let xPos = this.x;
 	    let yPos = this.y;
 	    let rocket = new Rocket(xPos, yPos, this.context, this.canvas);

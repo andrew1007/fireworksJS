@@ -22,3 +22,20 @@
 body {
   margin: -10px -10px -10px -10px;
 }
+
+.links {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  top: 40px;
+  left:40px;
+  z-index: 100;
+  height:auto;
+  color: white;
+  margin-right: 20px;
+}
+
+.fa {
+  color: white;
+  margin-right: 30px;
+}
