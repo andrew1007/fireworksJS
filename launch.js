@@ -97,7 +97,7 @@ window.addEventListener("resize", () => {
 
 fireworksArr = []
 clearScreen = () =>{
-  ctx.fillStyle = "rgba(0, 0, 0, .1)";
+  ctx.fillStyle = "rgba(0, 0, 0, .05)";
   ctx.fillRect(0,0, canvas.width, canvas.height)
   requestAnimationFrame(() => clearScreen())
 }
@@ -117,6 +117,24 @@ for (let i =0; i < 13; i++){
 window.setTimeout(() =>{
   document.getElementById("fireworks-message").style.zIndex="-1"
 }, 3500)
+
+canvas.addEventListener("touchstart", function(event) {
+    // Handle touchstart...
+}, false);
+
+canvas.addEventListener("touchstart",
+(e) => {
+  let xPos = e.clientX;
+  let yPos= e.clientY;
+  fireworksArr = fireworksArr.filter( firework => {
+    return firework.exists()
+  })
+  for (let i = 0; i < 20; i++){
+    var x = new Launch(xPos, canvas.height, ctx, canvas)
+      x.addFirework(e)
+      x.update()
+  }
+}, false)
 
 document.addEventListener("click",
 (e) => {

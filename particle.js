@@ -13,7 +13,7 @@ class Particle {
     this.velX = Math.cos(angle) * speed + 0.5;
     this.velY = Math.sin(angle) * speed;
     this.radius = radius
-    this.size = 5
+    this.size = 2
     this.shrink = .950
     this.color = color
   }

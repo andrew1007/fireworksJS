@@ -131,7 +131,7 @@
 	
 	fireworksArr = [];
 	clearScreen = () => {
-	  ctx.fillStyle = "rgba(0, 0, 0, .1)";
+	  ctx.fillStyle = "rgba(0, 0, 0, .05)";
 	  ctx.fillRect(0, 0, canvas.width, canvas.height);
 	  requestAnimationFrame(() => clearScreen());
 	};
@@ -151,6 +151,23 @@
 	window.setTimeout(() => {
 	  document.getElementById("fireworks-message").style.zIndex = "-1";
 	}, 3500);
+	
+	canvas.addEventListener("touchstart", function (event) {
+	  // Handle touchstart...
+	}, false);
+	
+	canvas.addEventListener("touchstart", e => {
+	  let xPos = e.clientX;
+	  let yPos = e.clientY;
+	  fireworksArr = fireworksArr.filter(firework => {
+	    return firework.exists();
+	  });
+	  for (let i = 0; i < 20; i++) {
+	    var x = new Launch(xPos, canvas.height, ctx, canvas);
+	    x.addFirework(e);
+	    x.update();
+	  }
+	}, false);
 	
 	document.addEventListener("click", e => {
 	  let xPos = e.clientX;
@@ -242,7 +259,7 @@
 	    this.velX = Math.cos(angle) * speed + 0.5;
 	    this.velY = Math.sin(angle) * speed;
 	    this.radius = radius;
-	    this.size = 5;
+	    this.size = 2;
 	    this.shrink = .950;
 	    this.color = color;
 	  }
