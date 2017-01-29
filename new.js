@@ -81,7 +81,7 @@
 	  }
 	
 	  clearBoard() {
-	    this.context.fillStyle = "rgba(0, 0, 0, .05)";
+	    this.context.fillStyle = "rgba(0, 0, 0, .10)";
 	    this.context.fillRect(0, 0, canvas.width, canvas.height);
 	  }
 	
@@ -133,7 +133,7 @@
 	
 	fireworksArr = [];
 	clearScreen = () => {
-	  ctx.fillStyle = "rgba(0, 0, 0, .05)";
+	  ctx.fillStyle = "rgba(6, 3, 10, .15)";
 	  ctx.fillRect(0, 0, canvas.width, canvas.height);
 	  requestAnimationFrame(() => clearScreen());
 	};
