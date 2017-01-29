@@ -10,10 +10,12 @@ class Launch {
     this.canvas = canvas
     this.x = x
     this.y = y
+    this.color = this.getRandomColor(1)
   }
 
   addFirework(e){
     // e.preventDefault()
+    console.log("fireqwork");
       let xPos = this.x;
       let yPos= this.y;
       let rocket = new Rocket
@@ -21,7 +23,8 @@ class Launch {
         xPos,
         yPos,
         this.context,
-        this.canvas
+        this.canvas,
+        this.color
       )
       this.rockets = this.rockets.concat(rocket)
   }
@@ -30,7 +33,8 @@ class Launch {
     let rocket = new Rocket(this.x,
       this.y,
       this.context,
-      this.canvas
+      this.canvas,
+      this.color
     )
     this.rockets.push(rocket)
     this.update()
@@ -60,7 +64,7 @@ class Launch {
     let color = this.getRandomColor(1)
       if (firework.exploded()){
         for(let i=0; i < 20; i++){
-          this.particles = this.particles.concat(new Particle(firework.x, firework.y, this.context, this.canvas, 3, color))
+          this.particles = this.particles.concat(new Particle(firework.x, firework.y, this.context, this.canvas, 5, this.color))
         }
         this.rockets.splice(i, 1)
       }
@@ -118,23 +122,6 @@ window.setTimeout(() =>{
   document.getElementById("fireworks-message").style.zIndex="-1"
 }, 3500)
 
-canvas.addEventListener("touchstart", function(event) {
-    // Handle touchstart...
-}, false);
-
-canvas.addEventListener("touchstart",
-(e) => {
-  let xPos = e.clientX;
-  let yPos= e.clientY;
-  fireworksArr = fireworksArr.filter( firework => {
-    return firework.exists()
-  })
-  for (let i = 0; i < 20; i++){
-    var x = new Launch(xPos, canvas.height, ctx, canvas)
-      x.addFirework(e)
-      x.update()
-  }
-}, false)
 
 document.addEventListener("click",
 (e) => {

@@ -55,18 +55,20 @@
 	    this.canvas = canvas;
 	    this.x = x;
 	    this.y = y;
+	    this.color = this.getRandomColor(1);
 	  }
 	
 	  addFirework(e) {
 	    // e.preventDefault()
+	    console.log("fireqwork");
 	    let xPos = this.x;
 	    let yPos = this.y;
-	    let rocket = new Rocket(xPos, yPos, this.context, this.canvas);
+	    let rocket = new Rocket(xPos, yPos, this.context, this.canvas, this.color);
 	    this.rockets = this.rockets.concat(rocket);
 	  }
 	
 	  welcomeFireworks() {
-	    let rocket = new Rocket(this.x, this.y, this.context, this.canvas);
+	    let rocket = new Rocket(this.x, this.y, this.context, this.canvas, this.color);
 	    this.rockets.push(rocket);
 	    this.update();
 	  }
@@ -95,7 +97,7 @@
 	      let color = this.getRandomColor(1);
 	      if (firework.exploded()) {
 	        for (let i = 0; i < 20; i++) {
-	          this.particles = this.particles.concat(new Particle(firework.x, firework.y, this.context, this.canvas, 3, color));
+	          this.particles = this.particles.concat(new Particle(firework.x, firework.y, this.context, this.canvas, 5, this.color));
 	        }
 	        this.rockets.splice(i, 1);
 	      }
@@ -152,23 +154,6 @@
 	  document.getElementById("fireworks-message").style.zIndex = "-1";
 	}, 3500);
 	
-	canvas.addEventListener("touchstart", function (event) {
-	  // Handle touchstart...
-	}, false);
-	
-	canvas.addEventListener("touchstart", e => {
-	  let xPos = e.clientX;
-	  let yPos = e.clientY;
-	  fireworksArr = fireworksArr.filter(firework => {
-	    return firework.exists();
-	  });
-	  for (let i = 0; i < 20; i++) {
-	    var x = new Launch(xPos, canvas.height, ctx, canvas);
-	    x.addFirework(e);
-	    x.update();
-	  }
-	}, false);
-	
 	document.addEventListener("click", e => {
 	  let xPos = e.clientX;
 	  let yPos = e.clientY;
@@ -187,20 +172,18 @@
 /***/ function(module, exports) {
 
 	class Rocket {
-	  constructor(x, y, context, canvas) {
+	  constructor(x, y, context, canvas, color) {
 	    this.x = x;
 	    this.y = y;
 	    this.shrink = .999;
-	    this.size = 4;
+	    this.size = 3;
 	
 	    this.resistance = 0.99;
 	    this.gravity = 0.07;
 	
-	    this.flick = false;
-	
 	    this.alpha = 1;
 	    this.fade = 0;
-	    this.color = 0;
+	    this.color = color;
 	
 	    this.context = context;
 	    this.canvas = canvas;
@@ -227,7 +210,8 @@
 	  }
 	
 	  render() {
-	    this.context.fillStyle = 'white';
+	    // console.log(this.color);
+	    this.context.fillStyle = this.color;
 	
 	    this.context.beginPath();
 	    this.context.arc(this.x, this.y, this.size, 0, Math.PI * 2, true);
@@ -259,7 +243,7 @@
 	    this.velX = Math.cos(angle) * speed + 0.5;
 	    this.velY = Math.sin(angle) * speed;
 	    this.radius = radius;
-	    this.size = 2;
+	    this.size = 4.5;
 	    this.shrink = .950;
 	    this.color = color;
 	  }

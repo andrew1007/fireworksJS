@@ -1,18 +1,16 @@
 class Rocket {
-  constructor(x, y, context, canvas){
+  constructor(x, y, context, canvas, color){
     this.x = x
     this.y = y
     this.shrink = .999;
-    this.size = 4;
+    this.size = 3;
 
     this.resistance = 0.99;
     this.gravity = 0.07
 
-    this.flick = false;
-
     this.alpha = 1;
     this.fade = 0;
-    this.color = 0;
+    this.color = color;
 
     this.context = context
     this.canvas = canvas
@@ -39,7 +37,8 @@ class Rocket {
   }
 
   render(){
-    this.context.fillStyle = 'white';
+    // console.log(this.color);
+    this.context.fillStyle = this.color;
 
     this.context.beginPath();
     this.context.arc(this.x, this.y, this.size, 0, Math.PI * 2, true);
