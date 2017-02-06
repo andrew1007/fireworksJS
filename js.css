@@ -1,7 +1,12 @@
 #canvas {
-  border: solid 3px;
   border-color: #06030a;
   background-color: black;
+}
+
+.button-link {
+  width: 64px;
+  height: 64px;
+  margin-right: 25px;
 }
 
 #fireworks-message{
@@ -15,12 +20,18 @@
   font-size: 40px;
 }
 
+a {
+  margin: 0;
+  padding: 0;
+}
+
 #git {
   z-index: 100;
 }
 
 body {
-  margin: -10px -10px -10px -10px;
+  margin: -10px -30px -30px -10px;
+  background-color: black;
 }
 
 .links {

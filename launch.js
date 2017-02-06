@@ -14,8 +14,6 @@ class Launch {
   }
 
   addFirework(e){
-    // e.preventDefault()
-    console.log("fireqwork");
       let xPos = this.x;
       let yPos= this.y;
       let rocket = new Rocket
@@ -47,10 +45,10 @@ class Launch {
     return `rgba(${r}, ${g}, ${b}, ${a})`
   }
 
-  clearBoard(){
-    this.context.fillStyle = "rgba(0, 0, 0, .10)";
-    this.context.fillRect(0,0, canvas.width, canvas.height)
-  }
+  // clearBoard(){
+  //   this.context.fillStyle = "rgba(0, 0, 0, .10)";
+  //   this.context.fillRect(0,0, canvas.width, canvas.height)
+  // }
 
   exists(){
     return this.rockets.length > 0
@@ -85,7 +83,6 @@ class Launch {
 
 }
 
-
 document.body.style.overflow = "hidden"
 let canvas = document.getElementById('canvas')
 let ctx = canvas.getContext( '2d' )
@@ -99,7 +96,7 @@ window.addEventListener("resize", () => {
   ctx.canvas.height = window.innerHeight;
 })
 
-fireworksArr = []
+var fireworksArr = []
 clearScreen = () =>{
   ctx.fillStyle = "rgba(6, 3, 10, .15)";
   ctx.fillRect(0,0, canvas.width, canvas.height)
@@ -130,7 +127,7 @@ document.addEventListener("click",
   fireworksArr = fireworksArr.filter( firework => {
     return firework.exists()
   })
-  for (let i = 0; i < 20; i++){
+  for (let i = 0; i < 13; i++){
     var x = new Launch(xPos, canvas.height, ctx, canvas)
       x.addFirework(e)
       x.update()

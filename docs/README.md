@@ -7,7 +7,6 @@ A simulation of fireworks is planned with the following features that will be av
 
 In addition, this project will include:
 
-- [ ] A color picker dropdown and ticker for randomize colors
 - [ ] a production Readme
 
 ### Wireframes
@@ -36,7 +35,7 @@ There will be two scripts involved in this project:
 
 **Day 2** Learn more about animation and how to create particles that move non-linearly. Goals of the day:
   - Complete the math that allows particle effects to curve downwards in a realistic manner
-  - Implement color picker and color randomizer
+  - Implement color randomizer
 
 **Day 3** Implement styling techniques. Goals of the day:
   - Construct gradients and truly styled fireworks for the projectile and the particles

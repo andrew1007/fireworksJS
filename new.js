@@ -59,8 +59,6 @@
 	  }
 	
 	  addFirework(e) {
-	    // e.preventDefault()
-	    console.log("fireqwork");
 	    let xPos = this.x;
 	    let yPos = this.y;
 	    let rocket = new Rocket(xPos, yPos, this.context, this.canvas, this.color);
@@ -80,10 +78,10 @@
 	    return `rgba(${r}, ${g}, ${b}, ${a})`;
 	  }
 	
-	  clearBoard() {
-	    this.context.fillStyle = "rgba(0, 0, 0, .10)";
-	    this.context.fillRect(0, 0, canvas.width, canvas.height);
-	  }
+	  // clearBoard(){
+	  //   this.context.fillStyle = "rgba(0, 0, 0, .10)";
+	  //   this.context.fillRect(0,0, canvas.width, canvas.height)
+	  // }
 	
 	  exists() {
 	    return this.rockets.length > 0;
@@ -131,7 +129,7 @@
 	  ctx.canvas.height = window.innerHeight;
 	});
 	
-	fireworksArr = [];
+	var fireworksArr = [];
 	clearScreen = () => {
 	  ctx.fillStyle = "rgba(6, 3, 10, .15)";
 	  ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -160,7 +158,7 @@
 	  fireworksArr = fireworksArr.filter(firework => {
 	    return firework.exists();
 	  });
-	  for (let i = 0; i < 20; i++) {
+	  for (let i = 0; i < 13; i++) {
 	    var x = new Launch(xPos, canvas.height, ctx, canvas);
 	    x.addFirework(e);
 	    x.update();
