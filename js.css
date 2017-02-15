@@ -52,5 +52,7 @@ body {
 
 .fa {
   color: white;
-  margin-right: 30px;
+}
+.fa:hover {
+  color: gray;
 }
