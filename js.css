@@ -6,7 +6,10 @@
 .button-link {
   width: 64px;
   height: 64px;
-  margin-right: 25px;
+}
+
+.button-link:hover {
+  color: red;
 }
 
 #fireworks-message{
@@ -38,12 +41,13 @@ body {
   position: absolute;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   top: 40px;
   left:40px;
   z-index: 100;
   height:auto;
   color: white;
-  margin-right: 20px;
+  width: 140px;
 }
 
 .fa {
