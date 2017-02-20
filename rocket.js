@@ -5,7 +5,7 @@ class Rocket {
     this.shrink = .999;
     this.size = 3;
 
-    this.resistance = 0.99;
+    this.resistance = 0.983;
     this.gravity = 0.07
 
     this.alpha = 1;
@@ -15,7 +15,7 @@ class Rocket {
     this.context = context
     this.canvas = canvas
     this.velX = Math.random() * 6 - 3;
-    this.velY = Math.random() * -4 * (y / 320) - 6.5;
+    this.velY = Math.random() * -5 * (y / 320) - 10.5;
   }
 
   update(){
@@ -29,7 +29,7 @@ class Rocket {
   }
 
   exploded(){
-    if (this.velY >= 0){
+    if (this.velY >= -Math.random()*3){
       return true
     } else{
       return false

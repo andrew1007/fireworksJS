@@ -176,7 +176,7 @@
 	    this.shrink = .999;
 	    this.size = 3;
 	
-	    this.resistance = 0.99;
+	    this.resistance = 0.983;
 	    this.gravity = 0.07;
 	
 	    this.alpha = 1;
@@ -186,7 +186,7 @@
 	    this.context = context;
 	    this.canvas = canvas;
 	    this.velX = Math.random() * 6 - 3;
-	    this.velY = Math.random() * -4 * (y / 320) - 6.5;
+	    this.velY = Math.random() * -5 * (y / 320) - 10.5;
 	  }
 	
 	  update() {
@@ -200,7 +200,7 @@
 	  }
 	
 	  exploded() {
-	    if (this.velY >= 0) {
+	    if (this.velY >= -Math.random() * 3) {
 	      return true;
 	    } else {
 	      return false;
@@ -230,19 +230,19 @@
 	  constructor(x = 0, y = 0, ctx, canvas, radius, color) {
 	    this.x = x;
 	    this.y = y;
-	    this.gravity = 0.2;
-	    this.resistance = 0.92;
+	    this.gravity = 0.1;
+	    this.resistance = 0.98;
 	    this.context = ctx;
 	    this.canvas = canvas;
 	    this.posX = this.canvas.width / 2;
 	    this.posY = this.canvas.height;
 	    let angle = Math.random() * Math.PI * 2;
-	    let speed = Math.cos(Math.random() * Math.PI / 2) * 15.7;
-	    this.velX = Math.cos(angle) * speed + 0.5;
-	    this.velY = Math.sin(angle) * speed;
+	    let speed = Math.cos(Math.random() * Math.PI / 2) * (10 * (Math.random() / 2 + 0.5));
+	    this.velX = Math.cos(angle) * speed + 0.6;
+	    this.velY = Math.sin(angle) * speed * 0.80;
 	    this.radius = radius;
-	    this.size = 4.5;
-	    this.shrink = .950;
+	    this.size = 4;
+	    this.shrink = .98 + Math.random() / 1000;
 	    this.color = color;
 	  }
 	
@@ -265,7 +265,7 @@
 	  }
 	
 	  exists() {
-	    if (this.size < 0.4) {
+	    if (this.size < 2) {
 	      return false;
 	    } else {
 	      return true;
