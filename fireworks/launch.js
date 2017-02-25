@@ -14,6 +14,8 @@ class Launch {
     this.x = x
     this.y = y
     this.color = this.getRandomColor(1)
+    this.particleCount = 0
+
   }
 
   addFirework(e){
@@ -101,22 +103,32 @@ class Launch {
     }
     this.rockets.forEach((firework, i) =>{
     let color = this.getRandomColor()
+    let rng = Math.random()
       if (firework.exploded()){
         switch(firework.constructor.name){
           case "RocketStreak":
           for(let i=0; i < 45; i++){
+            if (rng > 0.50){
+              this.color = this.getRandomColor()
+            }
+            this.particleCount += 45
             this.particles = this.particles.concat(new ParticleCircle(firework.x, firework.y, this.context, this.canvas, this.color))
           }
           break
           case "RocketChain":
-          for(let i=0; i < 5; i++){
+          for(let i=0; i < 3; i++){
+            if (rng > 0.60){
+              this.color = this.getRandomColor()
+            }
             this.particles = this.particles.concat(new ParticleChain(firework.x, firework.y, this.context, this.canvas, 5, this.color))
           }
+          this.particleCount += 3
           break
           case "Rocket":
           for(let i=0; i < 30; i++){
             this.particles = this.particles.concat(new Particle(firework.x, firework.y, this.context, this.canvas, 5, this.color))
           }
+          this.particleCount += 30
           break
         }
         this.rockets.splice(i, 1)
@@ -126,14 +138,20 @@ class Launch {
       })
       this.particles.forEach((particle, i) => {
         if (!particle.exists()) {
+          let rng = Math.random()
           if (particle.constructor.name === "ParticleChain"){
+            if (rng > 0.80){
+              this.color = this.getRandomColor()
+            }
             for(let i=0; i < 20; i++){
               this.particles = this.particles.concat(new Particle(particle.x, particle.y, this.context, this.canvas, 5, this.color))
-          }
+              this.particleCount += 20
+            }
           this.particles.splice(i, 1)
         } else {
             this.particles.splice(i, 1)
           }
+          this.particleCount -= 1
         }
         particle.render()
         particle.update()
@@ -154,6 +172,7 @@ window.addEventListener("resize", () => {
   ctx.canvas.width  = window.innerWidth;
   ctx.canvas.height = window.innerHeight;
 })
+
 
 var fireworksArr = []
 clearScreen = () =>{
@@ -186,7 +205,7 @@ document.addEventListener("click",
   fireworksArr = fireworksArr.filter( firework => {
     return firework.exists()
   })
-  for (let i = 0; i < 4; i++){
+  for (let i = 0; i < 5; i++){
     var x = new Launch(xPos, canvas.height, ctx, canvas)
       x.addFirework(e)
       x.update()
