@@ -1,5 +1,7 @@
 const Rocket = require("./rocket");
+const RocketStreak = require("./rocket_streak")
 const Particle = require("./particle");
+const FireworkCircle = require("./firework_circle");
 
 
 class Launch {
@@ -16,19 +18,35 @@ class Launch {
   addFirework(e){
       let xPos = this.x;
       let yPos= this.y;
-      let rocket = new Rocket
-      (
-        xPos,
-        yPos,
-        this.context,
-        this.canvas,
-        this.color
-      )
+      let any_rocket_streaks = this.rockets.slice(0,3).filter( (rocket) => {
+        return rocket.constructor.name === "RocketStreak"
+      })
+      var rocket
+      if (Math.random() > 0.85 && any_rocket_streaks.length < 1){
+        rocket = new RocketStreak
+        (
+          xPos,
+          yPos,
+          this.context,
+          this.canvas,
+          this.color
+        )
+      }
+      else {
+        rocket = new Rocket
+        (
+          xPos,
+          yPos,
+          this.context,
+          this.canvas,
+          this.color
+        )
+      }
       this.rockets = this.rockets.concat(rocket)
   }
 
   welcomeFireworks(){
-    let rocket = new Rocket(this.x,
+    let rocket = new RocketStreak(this.x,
       this.y,
       this.context,
       this.canvas,
@@ -38,11 +56,11 @@ class Launch {
     this.update()
   }
 
-  getRandomColor(a){
+  getRandomColor(){
     let r = 0 + Math.round(Math.random() * 225);
     let g = 0 + Math.round(Math.random() * 225);
     let b = 0 + Math.round(Math.random() * 225);
-    return `rgba(${r}, ${g}, ${b}, ${a})`
+    return `rgba(${r}, ${g}, ${b}`
   }
 
   // clearBoard(){
@@ -59,10 +77,19 @@ class Launch {
       requestAnimationFrame(() => this.update())
     }
     this.rockets.forEach((firework, i) =>{
-    let color = this.getRandomColor(1)
+      console.log(firework.constructor.name === "RocketStreak");
+    let color = this.getRandomColor()
       if (firework.exploded()){
-        for(let i=0; i < 20; i++){
-          this.particles = this.particles.concat(new Particle(firework.x, firework.y, this.context, this.canvas, 5, this.color))
+        switch(firework.constructor.name){
+          case "RocketStreak":
+          for(let i=0; i < 45; i++){
+            console.log("yes");
+            this.particles = this.particles.concat(new FireworkCircle(firework.x, firework.y, this.context, this.canvas, this.color))
+          }
+          case "Rocket":
+          for(let i=0; i < 30; i++){
+            this.particles = this.particles.concat(new Particle(firework.x, firework.y, this.context, this.canvas, 5, this.color))
+          }
         }
         this.rockets.splice(i, 1)
       }
@@ -117,7 +144,7 @@ for (let i =0; i < 13; i++){
 
 window.setTimeout(() =>{
   document.getElementById("fireworks-message").style.zIndex="-1"
-}, 3500)
+}, 3000)
 
 
 document.addEventListener("click",
@@ -127,7 +154,7 @@ document.addEventListener("click",
   fireworksArr = fireworksArr.filter( firework => {
     return firework.exists()
   })
-  for (let i = 0; i < 13; i++){
+  for (let i = 0; i < 4; i++){
     var x = new Launch(xPos, canvas.height, ctx, canvas)
       x.addFirework(e)
       x.update()

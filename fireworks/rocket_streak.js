@@ -1,12 +1,12 @@
-class Rocket {
+class RocketStreak {
   constructor(x, y, context, canvas, color){
     this.x = x
     this.y = y
     this.shrink = .999;
-    this.size = 3;
+    this.size = 2.5;
 
     this.resistance = 0.983;
-    this.gravity = 0.07
+    this.gravity = 0.07;
 
     this.alpha = 1;
     this.fade = 0;
@@ -14,12 +14,11 @@ class Rocket {
 
     this.context = context
     this.canvas = canvas
-    this.velX = Math.random() * 6 - 3;
-    this.velY = Math.random() * -5 * (y / 320) - 10.5;
+    this.velX = Math.random() * 1 - 1;
+    this.velY = Math.random() * -2 * (y / 320) - 17.5;
   }
 
   update(){
-
     this.velX *= this.resistance;
     this.velY *= this.resistance;
 
@@ -36,12 +35,29 @@ class Rocket {
     }
   }
 
+  randomX(){
+    if (Math.random() > 0.5)
+      return Math.random() * 3
+    else {
+      return  Math.random() * -3
+    }
+  }
+
+  randomY(){
+    return Math.random()*5 + 30
+  }
+
   render(){
     // console.log(this.color);
-    this.context.fillStyle = this.color;
+    this.context.fillStyle = this.color + ", 1)";
 
     this.context.beginPath();
     this.context.arc(this.x, this.y, this.size, 0, Math.PI * 2, true);
+    for (let i=0; i < 15; i++){
+      let streakY = i * 5
+      this.context.fillStyle = this.color + `,${1 - i * 0.02}`
+      this.context.arc(this.x + i * -this.velX * 1 + this.randomX() * i * 0.2, this.y + streakY + this.velY, this.size, 0, Math.PI * 2, true);
+    }
     this.context.closePath();
     this.context.fill();
 
@@ -49,4 +65,4 @@ class Rocket {
   }
 }
 
-module.exports = Rocket;
+module.exports = RocketStreak;

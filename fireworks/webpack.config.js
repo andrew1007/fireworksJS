@@ -2,7 +2,7 @@ module.exports = {
   entry: './launch.js',
   output: {
     path: './',
-    filename: 'new.js',
+    filename: 'fireworks.js',
   },
   module  :  {
     loaders  :  [

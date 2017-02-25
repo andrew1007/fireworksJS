@@ -45,7 +45,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	const Rocket = __webpack_require__(1);
-	const Particle = __webpack_require__(2);
+	const RocketStreak = __webpack_require__(2);
+	const Particle = __webpack_require__(3);
+	const FireworkCircle = __webpack_require__(4);
 	
 	class Launch {
 	  constructor(x, y, ctx, canvas) {
@@ -61,21 +63,29 @@
 	  addFirework(e) {
 	    let xPos = this.x;
 	    let yPos = this.y;
-	    let rocket = new Rocket(xPos, yPos, this.context, this.canvas, this.color);
+	    let any_rocket_streaks = this.rockets.slice(0, 3).filter(rocket => {
+	      return rocket.constructor.name === "RocketStreak";
+	    });
+	    var rocket;
+	    if (Math.random() > 0.85 && any_rocket_streaks.length < 1) {
+	      rocket = new RocketStreak(xPos, yPos, this.context, this.canvas, this.color);
+	    } else {
+	      rocket = new Rocket(xPos, yPos, this.context, this.canvas, this.color);
+	    }
 	    this.rockets = this.rockets.concat(rocket);
 	  }
 	
 	  welcomeFireworks() {
-	    let rocket = new Rocket(this.x, this.y, this.context, this.canvas, this.color);
+	    let rocket = new RocketStreak(this.x, this.y, this.context, this.canvas, this.color);
 	    this.rockets.push(rocket);
 	    this.update();
 	  }
 	
-	  getRandomColor(a) {
+	  getRandomColor() {
 	    let r = 0 + Math.round(Math.random() * 225);
 	    let g = 0 + Math.round(Math.random() * 225);
 	    let b = 0 + Math.round(Math.random() * 225);
-	    return `rgba(${r}, ${g}, ${b}, ${a})`;
+	    return `rgba(${r}, ${g}, ${b}`;
 	  }
 	
 	  // clearBoard(){
@@ -92,10 +102,19 @@
 	      requestAnimationFrame(() => this.update());
 	    }
 	    this.rockets.forEach((firework, i) => {
-	      let color = this.getRandomColor(1);
+	      console.log(firework.constructor.name === "RocketStreak");
+	      let color = this.getRandomColor();
 	      if (firework.exploded()) {
-	        for (let i = 0; i < 20; i++) {
-	          this.particles = this.particles.concat(new Particle(firework.x, firework.y, this.context, this.canvas, 5, this.color));
+	        switch (firework.constructor.name) {
+	          case "RocketStreak":
+	            for (let i = 0; i < 45; i++) {
+	              console.log("yes");
+	              this.particles = this.particles.concat(new FireworkCircle(firework.x, firework.y, this.context, this.canvas, this.color));
+	            }
+	          case "Rocket":
+	            for (let i = 0; i < 30; i++) {
+	              this.particles = this.particles.concat(new Particle(firework.x, firework.y, this.context, this.canvas, 5, this.color));
+	            }
 	        }
 	        this.rockets.splice(i, 1);
 	      }
@@ -150,7 +169,7 @@
 	
 	window.setTimeout(() => {
 	  document.getElementById("fireworks-message").style.zIndex = "-1";
-	}, 3500);
+	}, 3000);
 	
 	document.addEventListener("click", e => {
 	  let xPos = e.clientX;
@@ -158,7 +177,7 @@
 	  fireworksArr = fireworksArr.filter(firework => {
 	    return firework.exists();
 	  });
-	  for (let i = 0; i < 13; i++) {
+	  for (let i = 0; i < 4; i++) {
 	    var x = new Launch(xPos, canvas.height, ctx, canvas);
 	    x.addFirework(e);
 	    x.update();
@@ -181,7 +200,7 @@
 	
 	    this.alpha = 1;
 	    this.fade = 0;
-	    this.color = color;
+	    this.color = `${color}, 1)`;
 	
 	    this.context = context;
 	    this.canvas = canvas;
@@ -226,6 +245,77 @@
 /* 2 */
 /***/ function(module, exports) {
 
+	class RocketStreak {
+	  constructor(x, y, context, canvas, color) {
+	    this.x = x;
+	    this.y = y;
+	    this.shrink = .999;
+	    this.size = 2.5;
+	
+	    this.resistance = 0.983;
+	    this.gravity = 0.07;
+	
+	    this.alpha = 1;
+	    this.fade = 0;
+	    this.color = color;
+	
+	    this.context = context;
+	    this.canvas = canvas;
+	    this.velX = Math.random() * 1 - 1;
+	    this.velY = Math.random() * -2 * (y / 320) - 17.5;
+	  }
+	
+	  update() {
+	    this.velX *= this.resistance;
+	    this.velY *= this.resistance;
+	
+	    this.velY += this.gravity;
+	    this.x += this.velX;
+	    this.y += this.velY;
+	  }
+	
+	  exploded() {
+	    if (this.velY >= -Math.random() * 3) {
+	      return true;
+	    } else {
+	      return false;
+	    }
+	  }
+	
+	  randomX() {
+	    if (Math.random() > 0.5) return Math.random() * 3;else {
+	      return Math.random() * -3;
+	    }
+	  }
+	
+	  randomY() {
+	    return Math.random() * 5 + 30;
+	  }
+	
+	  render() {
+	    // console.log(this.color);
+	    this.context.fillStyle = this.color + ", 1)";
+	
+	    this.context.beginPath();
+	    this.context.arc(this.x, this.y, this.size, 0, Math.PI * 2, true);
+	    for (let i = 0; i < 15; i++) {
+	      let streakY = i * 5;
+	      this.context.fillStyle = this.color + `,${1 - i * 0.02}`;
+	      this.context.arc(this.x + i * -this.velX * 1 + this.randomX() * i * 0.2, this.y + streakY + this.velY, this.size, 0, Math.PI * 2, true);
+	    }
+	    this.context.closePath();
+	    this.context.fill();
+	
+	    this.context.restore();
+	  }
+	}
+	
+	module.exports = RocketStreak;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
 	class Particle {
 	  constructor(x = 0, y = 0, ctx, canvas, radius, color) {
 	    this.x = x;
@@ -243,7 +333,7 @@
 	    this.radius = radius;
 	    this.size = 4;
 	    this.shrink = .98 + Math.random() / 1000;
-	    this.color = color;
+	    this.color = color + ",1)";
 	  }
 	
 	  velX() {
@@ -286,6 +376,73 @@
 	
 	module.exports = Particle;
 
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	class FireworkCircle {
+	  constructor(x = 0, y = 0, ctx, canvas, color) {
+	    this.x = x;
+	    this.y = y;
+	    // this.gravity = 0.1
+	    this.resistance = 0.98;
+	    this.context = ctx;
+	    this.canvas = canvas;
+	    this.posX = this.canvas.width / 2;
+	    this.posY = this.canvas.height;
+	    let angle = Math.random() * Math.PI * 2;
+	    // let angle = Math.PI * 2;
+	    // let speed = Math.cos(Math.random() * Math.PI / 2) * (10 * (Math.random() / 2 + 0.5))
+	    let speed = 11;
+	    this.velX = Math.cos(angle) * speed + 1;
+	    this.velY = Math.sin(angle) * speed * 0.90;
+	    this.radius = 10;
+	    this.size = 4.5;
+	    this.shrink = .985 + Math.random() / 1000;
+	    // this.shrink = 0
+	    this.color = color;
+	  }
+	
+	  velX() {
+	    return Math.cos(this.angle) * this.speed;
+	  }
+	
+	  velY() {
+	    return Math.cos(this.angle) * this.speed;
+	  }
+	
+	  update() {
+	    this.velX *= this.resistance;
+	    this.velY *= this.resistance;
+	    // this.velY += this.gravity
+	
+	    this.x += this.velX;
+	    this.y += this.velY;
+	    this.size *= this.shrink;
+	  }
+	
+	  exists() {
+	    if (this.size < 3) {
+	      return false;
+	    } else {
+	      return true;
+	    }
+	  }
+	
+	  render() {
+	    this.context.fillStyle = this.color + ", 1)";
+	
+	    this.context.beginPath();
+	    this.context.arc(this.x, this.y, this.size, 0, Math.PI * 2, true);
+	    this.context.closePath();
+	    this.context.fill();
+	
+	    this.context.restore();
+	  }
+	}
+	
+	module.exports = FireworkCircle;
+
 /***/ }
 /******/ ]);
-//# sourceMappingURL=new.js.map
+//# sourceMappingURL=fireworks.js.map
