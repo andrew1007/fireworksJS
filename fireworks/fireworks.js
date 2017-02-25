@@ -47,7 +47,9 @@
 	const Rocket = __webpack_require__(1);
 	const RocketStreak = __webpack_require__(2);
 	const Particle = __webpack_require__(3);
-	const FireworkCircle = __webpack_require__(4);
+	const ParticleCircle = __webpack_require__(5);
+	const ParticleChain = __webpack_require__(8);
+	const RocketChain = __webpack_require__(9);
 	
 	class Launch {
 	  constructor(x, y, ctx, canvas) {
@@ -63,12 +65,12 @@
 	  addFirework(e) {
 	    let xPos = this.x;
 	    let yPos = this.y;
-	    let any_rocket_streaks = this.rockets.slice(0, 3).filter(rocket => {
-	      return rocket.constructor.name === "RocketStreak";
-	    });
 	    var rocket;
-	    if (Math.random() > 0.85 && any_rocket_streaks.length < 1) {
+	    let rng = Math.random();
+	    if (rng > 0.85) {
 	      rocket = new RocketStreak(xPos, yPos, this.context, this.canvas, this.color);
+	    } else if (rng > 0.70) {
+	      rocket = new RocketChain(xPos, yPos, this.context, this.canvas, this.color);
 	    } else {
 	      rocket = new Rocket(xPos, yPos, this.context, this.canvas, this.color);
 	    }
@@ -107,31 +109,40 @@
 	      requestAnimationFrame(() => this.update());
 	    }
 	    this.rockets.forEach((firework, i) => {
-	      console.log(firework.constructor.name === "RocketStreak");
 	      let color = this.getRandomColor();
 	      if (firework.exploded()) {
 	        switch (firework.constructor.name) {
 	          case "RocketStreak":
 	            for (let i = 0; i < 45; i++) {
-	              console.log("yes");
-	              this.particles = this.particles.concat(new FireworkCircle(firework.x, firework.y, this.context, this.canvas, this.color));
+	              this.particles = this.particles.concat(new ParticleCircle(firework.x, firework.y, this.context, this.canvas, this.color));
 	            }
+	            break;
+	          case "RocketChain":
+	            for (let i = 0; i < 5; i++) {
+	              this.particles = this.particles.concat(new ParticleChain(firework.x, firework.y, this.context, this.canvas, 5, this.color));
+	            }
+	            break;
 	          case "Rocket":
 	            for (let i = 0; i < 30; i++) {
 	              this.particles = this.particles.concat(new Particle(firework.x, firework.y, this.context, this.canvas, 5, this.color));
 	            }
+	            break;
 	        }
 	        this.rockets.splice(i, 1);
 	      }
 	      firework.render();
 	      firework.update();
 	    });
-	    this.particles = this.particles.filter(particle => {
-	      return particle.exists();
-	    });
 	    this.particles.forEach((particle, i) => {
 	      if (!particle.exists()) {
-	        this.particles.splice(i, 1);
+	        if (particle.constructor.name === "ParticleChain") {
+	          for (let i = 0; i < 20; i++) {
+	            this.particles = this.particles.concat(new Particle(particle.x, particle.y, this.context, this.canvas, 5, this.color));
+	          }
+	          this.particles.splice(i, 1);
+	        } else {
+	          this.particles.splice(i, 1);
+	        }
 	      }
 	      particle.render();
 	      particle.update();
@@ -182,7 +193,7 @@
 	  fireworksArr = fireworksArr.filter(firework => {
 	    return firework.exists();
 	  });
-	  for (let i = 0; i < 4; i++) {
+	  for (let i = 0; i < 2; i++) {
 	    var x = new Launch(xPos, canvas.height, ctx, canvas);
 	    x.addFirework(e);
 	    x.update();
@@ -304,8 +315,8 @@
 	    this.context.beginPath();
 	    this.context.arc(this.x, this.y, this.size, 0, Math.PI * 2, true);
 	    for (let i = 0; i < 15; i++) {
-	      let streakY = i * 5;
-	      this.context.fillStyle = this.color + `,${1 - i * 0.02}`;
+	      let streakY = i * 7;
+	      this.context.fillStyle = this.color + `,${1 - i * 0.03}`;
 	      this.context.arc(this.x + i * -this.velX * 1 + this.randomX() * i * 0.2, this.y + streakY + this.velY, this.size, 0, Math.PI * 2, true);
 	    }
 	    this.context.closePath();
@@ -382,10 +393,11 @@
 	module.exports = Particle;
 
 /***/ },
-/* 4 */
+/* 4 */,
+/* 5 */
 /***/ function(module, exports) {
 
-	class FireworkCircle {
+	class ParticleCircle {
 	  constructor(x = 0, y = 0, ctx, canvas, color) {
 	    this.x = x;
 	    this.y = y;
@@ -446,7 +458,130 @@
 	  }
 	}
 	
-	module.exports = FireworkCircle;
+	module.exports = ParticleCircle;
+
+/***/ },
+/* 6 */,
+/* 7 */,
+/* 8 */
+/***/ function(module, exports) {
+
+	class ParticleChain {
+	  constructor(x = 0, y = 0, ctx, canvas, radius, color) {
+	    this.x = x;
+	    this.y = y;
+	    this.resistance = 0.98;
+	    this.gravity = 0.1;
+	    this.context = ctx;
+	    this.canvas = canvas;
+	    this.posX = this.canvas.width / 2;
+	    this.posY = this.canvas.height;
+	    let angle = Math.random() / -1 * Math.PI * 2;
+	    let speed = Math.cos(Math.random() * Math.PI / 2) * (10 * (Math.random() / 2 + 0.5)) + 3;
+	    this.velX = Math.cos(angle) * speed + 0.6;
+	    this.velY = Math.sin(angle) * speed * 0.67;
+	    this.radius = radius;
+	    this.size = 7;
+	    this.shrink = .98 + Math.random() / 1000;
+	    this.color = color + ",1)";
+	  }
+	
+	  velX() {
+	    return Math.cos(this.angle) * this.speed;
+	  }
+	
+	  velY() {
+	    return Math.cos(this.angle) * this.speed + this.gravity;
+	  }
+	
+	  update() {
+	    this.velX *= this.resistance;
+	    this.velY *= this.resistance;
+	    this.velY += this.gravity;
+	
+	    this.x += this.velX;
+	    this.y += this.velY;
+	    this.size *= this.shrink;
+	  }
+	
+	  exists() {
+	    if (this.size < 4) {
+	      return false;
+	    } else {
+	      return true;
+	    }
+	  }
+	
+	  render() {
+	    this.context.fillStyle = this.color;
+	
+	    this.context.beginPath();
+	    this.context.arc(this.x, this.y, this.size, 0, Math.PI * 2, true);
+	    this.context.closePath();
+	    this.context.fill();
+	
+	    this.context.restore();
+	  }
+	}
+	
+	module.exports = ParticleChain;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	class RocketChain {
+	  constructor(x, y, context, canvas, color) {
+	    this.x = x;
+	    this.y = y;
+	    this.shrink = .999;
+	    this.size = 6;
+	
+	    this.resistance = 0.983;
+	    this.gravity = 0.07;
+	
+	    this.alpha = 1;
+	    this.fade = 0;
+	    this.color = `${color}, 1)`;
+	
+	    this.context = context;
+	    this.canvas = canvas;
+	    this.velX = Math.random() * 6 - 3;
+	    this.velY = Math.random() * -3 * (y / 320) - 11;
+	  }
+	
+	  update() {
+	
+	    this.velX *= this.resistance;
+	    this.velY *= this.resistance;
+	
+	    this.velY += this.gravity;
+	    this.x += this.velX;
+	    this.y += this.velY;
+	  }
+	
+	  exploded() {
+	    if (this.velY >= -Math.random() * 3) {
+	      return true;
+	    } else {
+	      return false;
+	    }
+	  }
+	
+	  render() {
+	    // console.log(this.color);
+	    this.context.fillStyle = this.color;
+	
+	    this.context.beginPath();
+	    this.context.arc(this.x, this.y, this.size, 0, Math.PI * 3, true);
+	    this.context.closePath();
+	    this.context.fill();
+	
+	    this.context.restore();
+	  }
+	}
+	
+	module.exports = RocketChain;
 
 /***/ }
 /******/ ]);

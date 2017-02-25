@@ -1,4 +1,4 @@
-class FireworkCircle {
+class ParticleCircle {
   constructor(x = 0, y = 0, ctx, canvas, color){
     this.x = x
     this.y = y
@@ -60,4 +60,4 @@ class FireworkCircle {
   }
 }
 
-module.exports = FireworkCircle;
+module.exports = ParticleCircle;

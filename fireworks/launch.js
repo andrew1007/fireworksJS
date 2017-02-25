@@ -1,8 +1,9 @@
 const Rocket = require("./rocket");
 const RocketStreak = require("./rocket_streak")
 const Particle = require("./particle");
-const FireworkCircle = require("./firework_circle");
-
+const ParticleCircle = require("./particle_circle");
+const ParticleChain = require("./particle_chain")
+const RocketChain = require("./rocket_chain")
 
 class Launch {
   constructor(x, y, ctx, canvas){
@@ -18,12 +19,19 @@ class Launch {
   addFirework(e){
       let xPos = this.x;
       let yPos= this.y;
-      let any_rocket_streaks = this.rockets.slice(0,3).filter( (rocket) => {
-        return rocket.constructor.name === "RocketStreak"
-      })
       var rocket
-      if (Math.random() > 0.85 && any_rocket_streaks.length < 1){
+      let rng = Math.random()
+      if (rng > 0.85 ){
         rocket = new RocketStreak
+        (
+          xPos,
+          yPos,
+          this.context,
+          this.canvas,
+          this.color
+        )
+      } else if (rng > 0.70){
+        rocket = new RocketChain
         (
           xPos,
           yPos,
@@ -92,31 +100,40 @@ class Launch {
       requestAnimationFrame(() => this.update())
     }
     this.rockets.forEach((firework, i) =>{
-      console.log(firework.constructor.name === "RocketStreak");
     let color = this.getRandomColor()
       if (firework.exploded()){
         switch(firework.constructor.name){
           case "RocketStreak":
           for(let i=0; i < 45; i++){
-            console.log("yes");
-            this.particles = this.particles.concat(new FireworkCircle(firework.x, firework.y, this.context, this.canvas, this.color))
+            this.particles = this.particles.concat(new ParticleCircle(firework.x, firework.y, this.context, this.canvas, this.color))
           }
+          break
+          case "RocketChain":
+          for(let i=0; i < 5; i++){
+            this.particles = this.particles.concat(new ParticleChain(firework.x, firework.y, this.context, this.canvas, 5, this.color))
+          }
+          break
           case "Rocket":
           for(let i=0; i < 30; i++){
             this.particles = this.particles.concat(new Particle(firework.x, firework.y, this.context, this.canvas, 5, this.color))
           }
+          break
         }
         this.rockets.splice(i, 1)
       }
         firework.render()
         firework.update()
       })
-      this.particles = this.particles.filter( (particle) => {
-        return particle.exists()
-      })
       this.particles.forEach((particle, i) => {
         if (!particle.exists()) {
+          if (particle.constructor.name === "ParticleChain"){
+            for(let i=0; i < 20; i++){
+              this.particles = this.particles.concat(new Particle(particle.x, particle.y, this.context, this.canvas, 5, this.color))
+          }
           this.particles.splice(i, 1)
+        } else {
+            this.particles.splice(i, 1)
+          }
         }
         particle.render()
         particle.update()
@@ -169,7 +186,7 @@ document.addEventListener("click",
   fireworksArr = fireworksArr.filter( firework => {
     return firework.exists()
   })
-  for (let i = 0; i < 4; i++){
+  for (let i = 0; i < 2; i++){
     var x = new Launch(xPos, canvas.height, ctx, canvas)
       x.addFirework(e)
       x.update()

@@ -54,8 +54,8 @@ class RocketStreak {
     this.context.beginPath();
     this.context.arc(this.x, this.y, this.size, 0, Math.PI * 2, true);
     for (let i=0; i < 15; i++){
-      let streakY = i * 5
-      this.context.fillStyle = this.color + `,${1 - i * 0.02}`
+      let streakY = i * 7
+      this.context.fillStyle = this.color + `,${1 - i * 0.03}`
       this.context.arc(this.x + i * -this.velX * 1 + this.randomX() * i * 0.2, this.y + streakY + this.velY, this.size, 0, Math.PI * 2, true);
     }
     this.context.closePath();
