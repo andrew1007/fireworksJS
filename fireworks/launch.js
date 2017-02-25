@@ -46,12 +46,27 @@ class Launch {
   }
 
   welcomeFireworks(){
-    let rocket = new RocketStreak(this.x,
-      this.y,
-      this.context,
-      this.canvas,
-      this.color
-    )
+    var rocket
+    if (Math.random() > 0.85){
+      rocket = new RocketStreak
+      (
+        this.x,
+        this.y,
+        this.context,
+        this.canvas,
+        this.color
+      )
+    }
+    else {
+      rocket = new Rocket
+      (
+        this.x,
+        this.y,
+        this.context,
+        this.canvas,
+        this.color
+      )
+    }
     this.rockets.push(rocket)
     this.update()
   }
@@ -136,7 +151,7 @@ const oneThird = Math.floor(ctx.canvas.width / 3)
 const twoThird = Math.floor(ctx.canvas.width / 2 )
 const oneWhole = Math.floor(ctx.canvas.width * 2 / 3)
 
-for (let i =0; i < 13; i++){
+for (let i =0; i < 6; i++){
   new Launch(oneThird, canvas.height, ctx, canvas).welcomeFireworks()
   new Launch(twoThird, canvas.height, ctx, canvas).welcomeFireworks()
   new Launch(oneWhole, canvas.height, ctx, canvas).welcomeFireworks()
