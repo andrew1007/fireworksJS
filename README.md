@@ -21,7 +21,7 @@ A proposal was drafted to help provide a production timeline.
 
 HTML canvas was used as an anchor tag for rendering image stills. All logic beyond rendering rules was implemented in vanilla JavaScript.
 
-##Rendering Firework Streaks
+##Rendering Firework Fade
 
 By default, `requestAnimationFrame()` performs a render of the next canvas element. The traditional method of clearing previous frames is with `clearRect()`. To create the streaks of previous frames, `fillRect()` was used. `fillRect()` was used to layer on a semi-transparent layer onto the screen with each instance of `requestAnimationFrame()`. This creates a continually fading image from previous frames.
 
@@ -36,8 +36,34 @@ clearScreen = () =>{
 }
 ```
 
-### Bonus features
+###Rendering Streaking Fireworks
+![Streak][streak]
+[streak]: ./docs/images/streaks.png
 
-Some features, if time permits are:
+There is a 15% chance of rendering a larger rocket with a trailing effect. This was accomplished by rendering multiple canvas elements beneath the first with increasing opacity as you render farther away from the topmost circle.
 
-- [ ] Creating different styles of fireworks.
+```javascript
+getRandomColor(){
+  let r = 0 + Math.round(Math.random() * 225);
+  let g = 0 + Math.round(Math.random() * 225);
+  let b = 0 + Math.round(Math.random() * 225);
+  return `rgba(${r}, ${g}, ${b}`
+}
+
+render(){
+  // console.log(this.color);
+  this.context.fillStyle = this.color + ", 1)";
+
+  this.context.beginPath();
+  this.context.arc(this.x, this.y, this.size, 0, Math.PI * 2, true);
+  for (let i=0; i < 15; i++){
+    let streakY = i * 5
+    this.context.fillStyle = this.color + `,${1 - i * 0.02}`
+    this.context.arc(this.x + i * -this.velX * 1 + this.randomX() * i * 0.2, this.y + streakY + this.velY, this.size, 0, Math.PI * 2, true);
+  }
+  this.context.closePath();
+  this.context.fill();
+
+  this.context.restore();
+}
+```

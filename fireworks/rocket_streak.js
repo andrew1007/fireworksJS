@@ -15,7 +15,7 @@ class RocketStreak {
     this.context = context
     this.canvas = canvas
     this.velX = Math.random() * 1 - 1;
-    this.velY = Math.random() * -2 * (y / 320) - 17.5;
+    this.velY = Math.random() * -2 * (y / 320) - 13.5;
   }
 
   update(){
