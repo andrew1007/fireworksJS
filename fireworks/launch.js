@@ -186,7 +186,7 @@ document.addEventListener("click",
   fireworksArr = fireworksArr.filter( firework => {
     return firework.exists()
   })
-  for (let i = 0; i < 2; i++){
+  for (let i = 0; i < 4; i++){
     var x = new Launch(xPos, canvas.height, ctx, canvas)
       x.addFirework(e)
       x.update()

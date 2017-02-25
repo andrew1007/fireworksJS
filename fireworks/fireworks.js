@@ -47,9 +47,9 @@
 	const Rocket = __webpack_require__(1);
 	const RocketStreak = __webpack_require__(2);
 	const Particle = __webpack_require__(3);
-	const ParticleCircle = __webpack_require__(5);
-	const ParticleChain = __webpack_require__(8);
-	const RocketChain = __webpack_require__(9);
+	const ParticleCircle = __webpack_require__(4);
+	const ParticleChain = __webpack_require__(5);
+	const RocketChain = __webpack_require__(6);
 	
 	class Launch {
 	  constructor(x, y, ctx, canvas) {
@@ -194,7 +194,7 @@
 	  fireworksArr = fireworksArr.filter(firework => {
 	    return firework.exists();
 	  });
-	  for (let i = 0; i < 2; i++) {
+	  for (let i = 0; i < 4; i++) {
 	    var x = new Launch(xPos, canvas.height, ctx, canvas);
 	    x.addFirework(e);
 	    x.update();
@@ -394,8 +394,7 @@
 	module.exports = Particle;
 
 /***/ },
-/* 4 */,
-/* 5 */
+/* 4 */
 /***/ function(module, exports) {
 
 	class ParticleCircle {
@@ -462,9 +461,7 @@
 	module.exports = ParticleCircle;
 
 /***/ },
-/* 6 */,
-/* 7 */,
-/* 8 */
+/* 5 */
 /***/ function(module, exports) {
 
 	class ParticleChain {
@@ -528,7 +525,7 @@
 	module.exports = ParticleChain;
 
 /***/ },
-/* 9 */
+/* 6 */
 /***/ function(module, exports) {
 
 	class RocketChain {
