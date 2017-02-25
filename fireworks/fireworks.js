@@ -69,7 +69,7 @@
 	    let rng = Math.random();
 	    if (rng > 0.85) {
 	      rocket = new RocketStreak(xPos, yPos, this.context, this.canvas, this.color);
-	    } else if (rng > 0.70) {
+	    } else if (rng > 0.60) {
 	      rocket = new RocketChain(xPos, yPos, this.context, this.canvas, this.color);
 	    } else {
 	      rocket = new Rocket(xPos, yPos, this.context, this.canvas, this.color);
@@ -79,10 +79,11 @@
 	
 	  welcomeFireworks() {
 	    var rocket;
-	    if (Math.random() > 0.85) {
+	    let rng = Math.random();
+	    if (rng > 0.80) {
 	      rocket = new RocketStreak(this.x, this.y, this.context, this.canvas, this.color);
 	    } else {
-	      rocket = new Rocket(this.x, this.y, this.context, this.canvas, this.color);
+	      rocket = new RocketChain(this.x, this.y, this.context, this.canvas, this.color);
 	    }
 	    this.rockets.push(rocket);
 	    this.update();
@@ -177,7 +178,7 @@
 	const twoThird = Math.floor(ctx.canvas.width / 2);
 	const oneWhole = Math.floor(ctx.canvas.width * 2 / 3);
 	
-	for (let i = 0; i < 6; i++) {
+	for (let i = 0; i < 3; i++) {
 	  new Launch(oneThird, canvas.height, ctx, canvas).welcomeFireworks();
 	  new Launch(twoThird, canvas.height, ctx, canvas).welcomeFireworks();
 	  new Launch(oneWhole, canvas.height, ctx, canvas).welcomeFireworks();
