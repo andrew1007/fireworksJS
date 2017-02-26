@@ -38,7 +38,7 @@ class Particle {
 
 
   exists(){
-    if (this.size < 2){
+    if (this.size < 1.5){
       return false
     } else {
       return true

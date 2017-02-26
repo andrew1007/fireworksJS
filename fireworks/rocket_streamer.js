@@ -32,8 +32,7 @@ class RocketStreamer {
     trigger(){
       let trigger_1 = this.velY > -13 && this.velY < -12.5
       let trigger_2 = this.velY > -8 && this.velY < -7.5
-      // let trigger_2 = this.velY > -7 && this.velY < -5
-      return (trigger_1 || trigger_2)
+      return trigger_1 || trigger_2
     }
 
     exploded(){

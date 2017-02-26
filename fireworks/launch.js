@@ -16,9 +16,10 @@ class Launch {
     this.y = y
     this.color = this.getRandomColor(1)
     this.particleCount = 0
-    this.chanceRocketStreak = 0.85
-    this.chanceRocketChain = 0.60
+    this.chanceRocketStreak = 0.7
+    this.chanceRocketChain = 0.50
     this.chanceRocketDefault = 0
+    this.chanceRocketStreamer = 0.85
     this.particleCircleCount = 45
     this.particleChainCount = 3
     this.particleDefaultCount = 30
@@ -83,20 +84,27 @@ class Launch {
     return rng > this.chanceRocketChain
   }
 
+  triggerRocketStreamer(rng){
+    return rng > this.chanceRocketStreamer
+  }
+
   addFirework(e){
     let xPos = this.x;
     let yPos= this.y;
     let rng = Math.random()
-    // switch(true){
-      // case this.triggerRocketStreak(rng):
+    switch(true){
+      case this.triggerRocketStreamer(rng):
         this.rocketStreamer(xPos, yPos)
-    //     break
-    //   case this.triggerRocketChain(rng):
-    //     this.rocketChain(xPos, yPos)
-    //     break
-    //   default:
-    //     this.rocketDefault(xPos, yPos)
-    // }
+        break
+      case this.triggerRocketStreak(rng):
+        this.rocketStreak(xPos, yPos)
+        break
+      case this.triggerRocketChain(rng):
+        this.rocketChain(xPos, yPos)
+        break
+      default:
+        this.rocketDefault(xPos, yPos)
+    }
   }
 
   welcomeFireworks(counter){
@@ -242,14 +250,14 @@ clearScreen = () =>{
 clearScreen()
 
 const welcome = () => {
-  const center = Math.floor(ctx.canvas.width / 3 )
+  const center = Math.floor(ctx.canvas.width / 4 )
   let counter = 0
-  for (let i=0; i < 2; i++){
+  for (let i=0; i < 3; i++){
     new Launch(center * (i+ 1), canvas.height, ctx, canvas).welcomeFireworks(counter)
   }
   counter += 1
   setInterval( ()=> {
-    for (let i=0; i < 2; i++){
+    for (let i=0; i < 3; i++){
       new Launch(center * (i + 1), canvas.height, ctx, canvas).welcomeFireworks(counter)
     }
     if (counter == 4){
@@ -274,7 +282,7 @@ document.addEventListener("click",
   fireworksArr = fireworksArr.filter( firework => {
     return firework.exists()
   })
-  for (let i = 0; i < 1; i++){
+  for (let i = 0; i < 3; i++){
     var x = new Launch(xPos, canvas.height, ctx, canvas)
       x.addFirework(e)
       x.update()

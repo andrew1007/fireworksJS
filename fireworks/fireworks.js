@@ -62,9 +62,10 @@
 	    this.y = y;
 	    this.color = this.getRandomColor(1);
 	    this.particleCount = 0;
-	    this.chanceRocketStreak = 0.85;
-	    this.chanceRocketChain = 0.60;
+	    this.chanceRocketStreak = 0.7;
+	    this.chanceRocketChain = 0.50;
 	    this.chanceRocketDefault = 0;
+	    this.chanceRocketStreamer = 0.85;
 	    this.particleCircleCount = 45;
 	    this.particleChainCount = 3;
 	    this.particleDefaultCount = 30;
@@ -100,20 +101,27 @@
 	    return rng > this.chanceRocketChain;
 	  }
 	
+	  triggerRocketStreamer(rng) {
+	    return rng > this.chanceRocketStreamer;
+	  }
+	
 	  addFirework(e) {
 	    let xPos = this.x;
 	    let yPos = this.y;
 	    let rng = Math.random();
-	    // switch(true){
-	    // case this.triggerRocketStreak(rng):
-	    this.rocketStreamer(xPos, yPos);
-	    //     break
-	    //   case this.triggerRocketChain(rng):
-	    //     this.rocketChain(xPos, yPos)
-	    //     break
-	    //   default:
-	    //     this.rocketDefault(xPos, yPos)
-	    // }
+	    switch (true) {
+	      case this.triggerRocketStreamer(rng):
+	        this.rocketStreamer(xPos, yPos);
+	        break;
+	      case this.triggerRocketStreak(rng):
+	        this.rocketStreak(xPos, yPos);
+	        break;
+	      case this.triggerRocketChain(rng):
+	        this.rocketChain(xPos, yPos);
+	        break;
+	      default:
+	        this.rocketDefault(xPos, yPos);
+	    }
 	  }
 	
 	  welcomeFireworks(counter) {
@@ -257,14 +265,14 @@
 	clearScreen();
 	
 	const welcome = () => {
-	  const center = Math.floor(ctx.canvas.width / 3);
+	  const center = Math.floor(ctx.canvas.width / 4);
 	  let counter = 0;
-	  for (let i = 0; i < 2; i++) {
+	  for (let i = 0; i < 3; i++) {
 	    new Launch(center * (i + 1), canvas.height, ctx, canvas).welcomeFireworks(counter);
 	  }
 	  counter += 1;
 	  setInterval(() => {
-	    for (let i = 0; i < 2; i++) {
+	    for (let i = 0; i < 3; i++) {
 	      new Launch(center * (i + 1), canvas.height, ctx, canvas).welcomeFireworks(counter);
 	    }
 	    if (counter == 4) {
@@ -287,7 +295,7 @@
 	  fireworksArr = fireworksArr.filter(firework => {
 	    return firework.exists();
 	  });
-	  for (let i = 0; i < 1; i++) {
+	  for (let i = 0; i < 3; i++) {
 	    var x = new Launch(xPos, canvas.height, ctx, canvas);
 	    x.addFirework(e);
 	    x.update();
@@ -408,7 +416,7 @@
 	
 	    this.context.beginPath();
 	    this.context.arc(this.x, this.y, this.size, 0, Math.PI * 2, true);
-	    for (let i = 0; i < 15; i++) {
+	    for (let i = 0; i < 20; i++) {
 	      let streakY = i * 5;
 	      this.context.fillStyle = this.color + `,${1 - i * 0.02}`;
 	      this.context.arc(this.x + i * -this.velX * 1 + this.randomX() * i * 0.2, this.y + streakY + this.velY, this.size, 0, Math.PI * 2, true);
@@ -465,7 +473,7 @@
 	  }
 	
 	  exists() {
-	    if (this.size < 2) {
+	    if (this.size < 1.5) {
 	      return false;
 	    } else {
 	      return true;
@@ -712,7 +720,6 @@
 	  trigger() {
 	    let trigger_1 = this.velY > -13 && this.velY < -12.5;
 	    let trigger_2 = this.velY > -8 && this.velY < -7.5;
-	    // let trigger_2 = this.velY > -7 && this.velY < -5
 	    return trigger_1 || trigger_2;
 	  }
 	
