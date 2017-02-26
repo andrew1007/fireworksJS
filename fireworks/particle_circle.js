@@ -2,7 +2,7 @@ class ParticleCircle {
   constructor(x = 0, y = 0, ctx, canvas, color){
     this.x = x
     this.y = y
-    // this.gravity = 0.1
+    this.gravity = 0.03
     this.resistance = 0.98
     this.context = ctx
     this.canvas = canvas
@@ -11,12 +11,12 @@ class ParticleCircle {
     let angle = Math.random() * Math.PI * 2
     // let angle = Math.PI * 2;
     // let speed = Math.cos(Math.random() * Math.PI / 2) * (10 * (Math.random() / 2 + 0.5))
-    let speed =  11
+    let speed =  8 + Math.random(2)
     this.velX = Math.cos(angle) * speed + 1;
     this.velY = Math.sin(angle) * speed * 0.90;
-    this.radius = 10
-    this.size = 4.5
-    this.shrink = .985 + Math.random()/1000
+    this.radius = 4
+    this.size = 4
+    this.shrink = .980 + Math.random()/1000
     // this.shrink = 0
     this.color = color
   }
@@ -32,7 +32,7 @@ class ParticleCircle {
   update(){
     this.velX *= this.resistance
     this.velY *= this.resistance
-    // this.velY += this.gravity
+    this.velY += this.gravity
 
     this.x += this.velX
     this.y += this.velY
@@ -41,7 +41,7 @@ class ParticleCircle {
 
 
   exists(){
-    if (this.size < 3){
+    if (this.size < 1.5){
       return false
     } else {
       return true

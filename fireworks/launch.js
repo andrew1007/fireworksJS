@@ -142,6 +142,13 @@ class Launch {
 
   particleCircle(firework, newColor = false){
     let rng = Math.random()
+    // let counter = 0
+    // let lessThanCouner = (num) => {
+    //   return counter < num
+    // }
+    // setInterval( () => {
+    //   switch(true){
+    //     case (lessThanCouner(10)):
     for (let i=0; i < this.particleCircleCount; i++){
       if (newColor){
         this.color = this.getRandomColor()
@@ -149,6 +156,13 @@ class Launch {
       this.particleCount += 45
       this.particles = this.particles.concat(new ParticleCircle(firework.x, firework.y, this.context, this.canvas, this.color))
     }
+    //     break
+    //     default:
+    //       clearInterval()
+    //       return
+    //   }
+    //   counter += 1
+    // }, 100)
   }
 
   particleChain(firework){
@@ -242,7 +256,7 @@ window.addEventListener("resize", () => {
 })
 
 clearScreen = () =>{
-  ctx.fillStyle = "rgba(6, 3, 10, .15)";
+  ctx.fillStyle = "rgba(6, 3, 10, .07)";
   ctx.fillRect(0,0, canvas.width, canvas.height)
   requestAnimationFrame(() => clearScreen())
 }
