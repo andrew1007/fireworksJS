@@ -4,7 +4,7 @@ const Particle = require("./particle");
 const ParticleCircle = require("./particle_circle");
 const ParticleChain = require("./particle_chain")
 const RocketChain = require("./rocket_chain")
-const RocketSparkler = require("./rocket_sparkler")
+const RocketStreamer = require("./rocket_streamer")
 
 class Launch {
   constructor(x, y, ctx, canvas){
@@ -25,7 +25,10 @@ class Launch {
   }
 
   sparkler(xPos, yPos){
-    let rocket = new RocketSparkler
+  }
+
+  rocketStreamer(xPos, yPos){
+    let rocket = new RocketStreamer
     (
       xPos,
       yPos,
@@ -83,31 +86,33 @@ class Launch {
   addFirework(e){
     let xPos = this.x;
     let yPos= this.y;
-    var rocket
     let rng = Math.random()
-    switch(true){
-      case this.triggerRocketStreak(rng):
-        this.rocketStreak(xPos, yPos)
-        break
-      case this.triggerRocketChain(rng):
-        this.rocketChain(xPos, yPos)
-        break
-      default:
-        this.rocketDefault(xPos, yPos)
-    }
+    // switch(true){
+      // case this.triggerRocketStreak(rng):
+        this.rocketStreamer(xPos, yPos)
+    //     break
+    //   case this.triggerRocketChain(rng):
+    //     this.rocketChain(xPos, yPos)
+    //     break
+    //   default:
+    //     this.rocketDefault(xPos, yPos)
+    // }
   }
 
-  welcomeFireworks(){
+  welcomeFireworks(counter){
     let rng = Math.random()
-    switch(true){
-      case this.triggerRocketStreak(rng):
-        this.rocketStreak(this.x, this.y)
+    switch(counter){
+      case 0:
+      this.rocketDefault(this.x, this.y)
         break
-      case this.triggerRocketChain(rng):
+      case 1:
         this.rocketChain(this.x, this.y)
         break
-      default:
-        this.rocketDefault(this.x, this.y)
+      case 2:
+        this.rocketStreak(this.x, this.y)
+        break
+      case 3:
+        this.rocketStreamer(this.x, this.y)
     }
     this.update()
   }
@@ -127,10 +132,10 @@ class Launch {
     return this.rockets.length > 0
   }
 
-  particleCircle(firework){
+  particleCircle(firework, newColor = false){
     let rng = Math.random()
     for (let i=0; i < this.particleCircleCount; i++){
-      if (rng > 0.50){
+      if (newColor){
         this.color = this.getRandomColor()
       }
       this.particleCount += 45
@@ -148,15 +153,22 @@ class Launch {
     }
   }
 
-  particleDefault(firework){
-    for(let i=0; i < this.particleDefaultCount; i++){
+  particleDefault(firework, particleCount, newColor = false){
+    for(let i=0; i < particleCount; i++){
+      if (newColor) {
+        this.color = this.getRandomColor()
+      }
       this.particles = this.particles.concat(new Particle(firework.x, firework.y, this.context, this.canvas, 5, this.color))
     }
   }
 
   triggerParticles(){
     this.rockets.forEach((firework, i) =>{
-    let color = this.getRandomColor()
+      if (firework.constructor.name === "RocketStreamer"){
+        if (firework.trigger()){
+          this.particleDefault(firework, 20, true)
+        }
+      }
     let rng = Math.random()
       if (firework.exploded()){
         switch(firework.constructor.name){
@@ -166,8 +178,11 @@ class Launch {
           case "RocketChain":
             this.particleChain(firework)
           break
+          case "RocketStreamer":
+            this.particleCircle(firework, true)
+          break
           case "Rocket":
-            this.particleDefault(firework)
+            this.particleDefault(firework, 30)
           break
         }
         this.rockets.splice(i, 1)
@@ -185,7 +200,7 @@ class Launch {
           if (rng > 0.80){
             this.color = this.getRandomColor()
           }
-        this.particleDefault(particle)
+        this.particleDefault(particle, 20)
       }
       this.particles.splice(i, 1)
       this.particleCount -= 1
@@ -226,15 +241,25 @@ clearScreen = () =>{
 
 clearScreen()
 
-const oneThird = Math.floor(ctx.canvas.width / 3)
-const twoThird = Math.floor(ctx.canvas.width / 2 )
-const oneWhole = Math.floor(ctx.canvas.width * 2 / 3)
-
-for (let i =0; i < 3; i++){
-  new Launch(oneThird, canvas.height, ctx, canvas).welcomeFireworks()
-  new Launch(twoThird, canvas.height, ctx, canvas).welcomeFireworks()
-  new Launch(oneWhole, canvas.height, ctx, canvas).welcomeFireworks()
+const welcome = () => {
+  const center = Math.floor(ctx.canvas.width / 3 )
+  let counter = 0
+  for (let i=0; i < 2; i++){
+    new Launch(center * (i+ 1), canvas.height, ctx, canvas).welcomeFireworks(counter)
+  }
+  counter += 1
+  setInterval( ()=> {
+    for (let i=0; i < 2; i++){
+      new Launch(center * (i + 1), canvas.height, ctx, canvas).welcomeFireworks(counter)
+    }
+    if (counter == 4){
+      clearInterval()
+    }
+    counter += 1
+  }, 1500)
 }
+welcome()
+
 
 window.setTimeout(() =>{
   document.getElementById("fireworks-message").style.zIndex="-1"
@@ -249,7 +274,7 @@ document.addEventListener("click",
   fireworksArr = fireworksArr.filter( firework => {
     return firework.exists()
   })
-  for (let i = 0; i < 5; i++){
+  for (let i = 0; i < 1; i++){
     var x = new Launch(xPos, canvas.height, ctx, canvas)
       x.addFirework(e)
       x.update()
