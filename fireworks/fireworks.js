@@ -337,7 +337,7 @@
 	    this.context = context;
 	    this.canvas = canvas;
 	    this.velX = Math.random() * 6 - 3;
-	    this.velY = -20.5 + Math.random() * 6;
+	    this.velY = -20.5 + Math.random() * 6 + y / 400;
 	  }
 	
 	  update() {
@@ -394,7 +394,7 @@
 	    this.context = context;
 	    this.canvas = canvas;
 	    this.velX = Math.random() * 1 - 1;
-	    this.velY = Math.random() * -2 * (y / 320) - 13.5;
+	    this.velY = Math.random() * -2 * (y / 320) - 13.5 + y / 450;
 	  }
 	
 	  update() {
@@ -717,7 +717,7 @@
 	    this.context = context;
 	    this.canvas = canvas;
 	    this.velX = Math.random() * 6 - 3;
-	    this.velY = -20.5 + Math.random() * 3;
+	    this.velY = -20.5 + Math.random() * 3 + y / 400;
 	  }
 	
 	  update() {
