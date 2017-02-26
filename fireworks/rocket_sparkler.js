@@ -1,24 +1,25 @@
-class RocketStreak {
+class RocketSparkler {
   constructor(x, y, context, canvas, color){
     this.x = x
     this.y = y
     this.shrink = .999;
-    this.size = 2.5;
+    this.size = 6;
 
     this.resistance = 0.983;
-    this.gravity = 0.07;
+    this.gravity = 0.1
 
     this.alpha = 1;
     this.fade = 0;
-    this.color = color;
+    this.color = `${color}, 1)`;
 
     this.context = context
     this.canvas = canvas
-    this.velX = Math.random() * 1 - 1;
-    this.velY = Math.random() * -2 * (y / 320) - 13.5;
+    this.velX = Math.random() * 10 - 3;
+    this.velY = -10 + Math.random() * 6;
   }
 
   update(){
+
     this.velX *= this.resistance;
     this.velY *= this.resistance;
 
@@ -28,7 +29,7 @@ class RocketStreak {
   }
 
   exploded(){
-    if (this.velY >= -Math.random()*3){
+    if (this.velY >= -Math.random()*0){
       return true
     } else{
       return false
@@ -41,10 +42,6 @@ class RocketStreak {
     else {
       return  Math.random() * -3
     }
-  }
-
-  randomY(){
-    return Math.random()*5 + 30
   }
 
   render(){
@@ -65,4 +62,4 @@ class RocketStreak {
   }
 }
 
-module.exports = RocketStreak;
+module.exports = RocketSparkler;

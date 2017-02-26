@@ -15,7 +15,7 @@ class Rocket {
     this.context = context
     this.canvas = canvas
     this.velX = Math.random() * 6 - 3;
-    this.velY = Math.random() * -5 * (y / 320) - 10.5;
+    this.velY = -20.5 + Math.random() * 6;
   }
 
   update(){
