@@ -1,5 +1,5 @@
 module.exports = {
-  entry: './launch.js',
+  entry: './entry.js',
   output: {
     path: './',
     filename: 'fireworks.js',

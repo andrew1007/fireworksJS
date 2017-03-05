@@ -1,6 +1,7 @@
 #canvas {
   border-color: #06030a;
   background-color: black;
+  position: absolute;
 }
 
 .button-link {

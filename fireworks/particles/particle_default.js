@@ -1,4 +1,4 @@
-class Particle {
+class ParticleDefault {
   constructor(x = 0, y = 0, ctx, canvas, radius, color){
     this.x = x
     this.y = y
@@ -57,4 +57,4 @@ class Particle {
   }
 }
 
-module.exports = Particle;
+module.exports = ParticleDefault;

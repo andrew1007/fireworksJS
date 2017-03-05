@@ -1,10 +1,11 @@
-const Rocket = require("./rocket");
-const RocketStreak = require("./rocket_streak")
-const Particle = require("./particle");
-const ParticleCircle = require("./particle_circle");
-const ParticleChain = require("./particle_chain")
-const RocketChain = require("./rocket_chain")
-const RocketStreamer = require("./rocket_streamer")
+const Rocket = require("../rockets/rocket");
+const RocketStreak = require("../rockets/rocket_streak");
+const RocketChain = require("../rockets/rocket_chain");
+const RocketStreamer = require("../rockets/rocket_streamer");
+
+const ParticleDefault = require("../particles/particle_default");
+const ParticleCircle = require("../particles/particle_circle");
+const ParticleChain = require("../particles/particle_chain");
 
 class Launch {
   constructor(x, y, ctx, canvas){
@@ -180,7 +181,7 @@ class Launch {
       if (newColor) {
         this.color = this.getRandomColor()
       }
-      this.particles = this.particles.concat(new Particle(firework.x, firework.y, this.context, this.canvas, 5, this.color))
+      this.particles = this.particles.concat(new ParticleDefault(firework.x, firework.y, this.context, this.canvas, 5, this.color))
     }
   }
 
@@ -241,14 +242,4 @@ class Launch {
     }
 
 }
-// document.addEventListener("mousemove", (e) => {
-//   console.log("asdfasdf");
-// })
-//
-// document.addEventListener("onclick", (e) => {
-//   console.log("asdfasdf");
-//   // if (e.which === 1 && e.clientX % 20 <= 1){
-//     triggerRockets(e, 3)
-//   // }
-// })
 module.exports = Launch;
