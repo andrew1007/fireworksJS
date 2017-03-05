@@ -241,65 +241,14 @@ class Launch {
     }
 
 }
-
-document.body.style.overflow = "hidden"
-let canvas = document.getElementById('canvas')
-let ctx = canvas.getContext( '2d' )
-ctx.canvas.width  = window.innerWidth;
-ctx.canvas.height = window.innerHeight;
-
-window.addEventListener("resize", () => {
-  let canvas = document.getElementById('canvas')
-  let ctx = canvas.getContext( '2d' )
-  ctx.canvas.width  = window.innerWidth;
-  ctx.canvas.height = window.innerHeight;
-})
-
-clearScreen = () =>{
-  ctx.fillStyle = "rgba(6, 3, 10, .07)";
-  ctx.fillRect(0,0, canvas.width, canvas.height)
-  requestAnimationFrame(() => clearScreen())
-}
-
-clearScreen()
-
-const welcome = () => {
-  const center = Math.floor(ctx.canvas.width / 4 )
-  let counter = 0
-  for (let i=0; i < 3; i++){
-    new Launch(center * (i+ 1), canvas.height, ctx, canvas).welcomeFireworks(counter)
-  }
-  counter += 1
-  setInterval( ()=> {
-    for (let i=0; i < 3; i++){
-      new Launch(center * (i + 1), canvas.height, ctx, canvas).welcomeFireworks(counter)
-    }
-    if (counter == 4){
-      clearInterval()
-    }
-    counter += 1
-  }, 1500)
-}
-welcome()
-
-
-window.setTimeout(() =>{
-  document.getElementById("fireworks-message").style.zIndex="-1"
-}, 2000)
-
-var fireworksArr = []
-
-document.addEventListener("click",
-(e) => {
-  let xPos = e.clientX;
-  let yPos= e.clientY;
-  fireworksArr = fireworksArr.filter( firework => {
-    return firework.exists()
-  })
-  for (let i = 0; i < 3; i++){
-    var x = new Launch(xPos, canvas.height, ctx, canvas)
-      x.addFirework(e)
-      x.update()
-  }
-}
-)
+// document.addEventListener("mousemove", (e) => {
+//   console.log("asdfasdf");
+// })
+//
+// document.addEventListener("onclick", (e) => {
+//   console.log("asdfasdf");
+//   // if (e.which === 1 && e.clientX % 20 <= 1){
+//     triggerRockets(e, 3)
+//   // }
+// })
+module.exports = Launch;
