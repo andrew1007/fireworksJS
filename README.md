@@ -5,10 +5,6 @@
 - [ ] User directed fireworks
 - [ ] Randomized colors
 
-![Welcome][welcome]
-
-[welcome]: ./docs/images/welcome.png
-
 ![Render][render]
 [render]: ./docs/images/render.png
 ##Project Design
