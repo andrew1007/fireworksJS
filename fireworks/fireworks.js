@@ -226,9 +226,9 @@
 	  }
 	
 	  getRandomColor() {
-	    let r = 30 + Math.round(Math.random() * 200);
-	    let g = 30 + Math.round(Math.random() * 200);
-	    let b = 30 + Math.round(Math.random() * 200);
+	    let r = 80 + Math.round(Math.random() * 150);
+	    let g = 80 + Math.round(Math.random() * 150);
+	    let b = 80 + Math.round(Math.random() * 150);
 	    let a = 1;
 	    return `rgba(${r}, ${g}, ${b}, ${a}`;
 	  }
