@@ -134,10 +134,6 @@ class Launch {
     return `rgba(${r}, ${g}, ${b}, ${a}`
   }
 
-  getPrettyColor(){
-
-  }
-
   exists(){
     return this.rockets.length > 0
   }

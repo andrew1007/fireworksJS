@@ -10,7 +10,7 @@ class RocketStreamer {
 
       this.alpha = 1;
       this.fade = 0;
-      this.color = "rgb(255,215, 0, 0.95)"
+      this.color = "rgba(255,215, 0, 0.7)"
 
       this.context = context
       this.canvas = canvas

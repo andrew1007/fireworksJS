@@ -233,8 +233,6 @@
 	    return `rgba(${r}, ${g}, ${b}, ${a}`;
 	  }
 	
-	  getPrettyColor() {}
-	
 	  exists() {
 	    return this.rockets.length > 0;
 	  }
@@ -543,7 +541,7 @@
 	
 	    this.alpha = 1;
 	    this.fade = 0;
-	    this.color = "rgb(255,215, 0, 0.95)";
+	    this.color = "rgba(255,215, 0, 0.7)";
 	
 	    this.context = context;
 	    this.canvas = canvas;
