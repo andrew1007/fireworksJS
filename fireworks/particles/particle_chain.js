@@ -15,7 +15,7 @@ class ParticleChain {
       this.radius = radius
       this.size = 5
       this.shrink = .98 + Math.random()/1000
-      this.color = color + ",1)"
+      this.color = color
     }
 
     velX(){

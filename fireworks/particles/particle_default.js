@@ -15,7 +15,7 @@ class ParticleDefault {
     this.radius = radius
     this.size = 4
     this.shrink = .98 + Math.random()/1000
-    this.color = color + ",1)"
+    this.color = color
   }
 
   velX(){

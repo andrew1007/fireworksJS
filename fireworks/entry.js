@@ -28,7 +28,7 @@ const welcomeRockets = () => {
 }
 
 const clearScreen = () => {
-  ctx.fillStyle = "rgba(6, 3, 10, .07)";
+  ctx.fillStyle = "rgba(0,0,0, .05)";
   ctx.fillRect(0,0, canvas.width, canvas.height)
   requestAnimationFrame(() => clearScreen())
 }
@@ -50,6 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
   screenHandle.listeners(ctx, canvas);
   clearScreen()
   welcomeRockets();
+
+  ctx.fillStyle = "rgba(55,55,55, 1)";
+  ctx.fillRect(0,0, canvas.width, canvas.height)
 
   document.addEventListener("click", (e) => {
     triggerRockets(e, 2)

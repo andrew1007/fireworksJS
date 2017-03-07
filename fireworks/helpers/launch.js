@@ -127,10 +127,11 @@ class Launch {
   }
 
   getRandomColor(){
-    let r = 0 + Math.round(Math.random() * 225);
-    let g = 0 + Math.round(Math.random() * 225);
-    let b = 0 + Math.round(Math.random() * 225);
-    return `rgba(${r}, ${g}, ${b}`
+    let r = 30 + Math.round(Math.random() * 200);
+    let g = 30 + Math.round(Math.random() * 200);
+    let b = 30 + Math.round(Math.random() * 200);
+    let a = 1
+    return `rgba(${r}, ${g}, ${b}, ${a}`
   }
 
   getPrettyColor(){

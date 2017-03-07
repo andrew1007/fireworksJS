@@ -1,6 +1,6 @@
 #canvas {
   border-color: #06030a;
-  background-color: black;
+  background-color: #373737;
   position: absolute;
 }
 
@@ -35,7 +35,7 @@ a {
 
 body {
   margin: -10px -30px -30px -10px;
-  background-color: black;
+  background-color: #0a0a0a;
 }
 
 .links {

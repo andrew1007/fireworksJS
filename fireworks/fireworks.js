@@ -48,7 +48,7 @@
 	// import {listeners, clearScreen} from './helpers/screen_handle';
 	// import Launch from './helpers/launch';
 	
-	const screenHandle = __webpack_require__(10);
+	const screenHandle = __webpack_require__(1);
 	const Launch = __webpack_require__(2);
 	
 	ctx = canvas.getContext('2d');
@@ -74,7 +74,7 @@
 	};
 	
 	const clearScreen = () => {
-	  ctx.fillStyle = "rgba(6, 3, 10, .07)";
+	  ctx.fillStyle = "rgba(0,0,0, .05)";
 	  ctx.fillRect(0, 0, canvas.width, canvas.height);
 	  requestAnimationFrame(() => clearScreen());
 	};
@@ -97,13 +97,32 @@
 	  clearScreen();
 	  welcomeRockets();
 	
+	  ctx.fillStyle = "rgba(55,55,55, 1)";
+	  ctx.fillRect(0, 0, canvas.width, canvas.height);
+	
 	  document.addEventListener("click", e => {
 	    triggerRockets(e, 2);
 	  });
 	});
 
 /***/ },
-/* 1 */,
+/* 1 */
+/***/ function(module, exports) {
+
+	const listeners = (ctx, canvas) => {
+	  document.body.style.overflow = "hidden";
+	  ctx.canvas.width = window.innerWidth;
+	  ctx.canvas.height = window.innerHeight;
+	
+	  window.addEventListener("resize", () => {
+	    ctx.canvas.width = window.innerWidth;
+	    ctx.canvas.height = window.innerHeight;
+	  });
+	};
+	
+	module.exports = { listeners };
+
+/***/ },
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -207,10 +226,11 @@
 	  }
 	
 	  getRandomColor() {
-	    let r = 0 + Math.round(Math.random() * 225);
-	    let g = 0 + Math.round(Math.random() * 225);
-	    let b = 0 + Math.round(Math.random() * 225);
-	    return `rgba(${r}, ${g}, ${b}`;
+	    let r = 30 + Math.round(Math.random() * 200);
+	    let g = 30 + Math.round(Math.random() * 200);
+	    let b = 30 + Math.round(Math.random() * 200);
+	    let a = 1;
+	    return `rgba(${r}, ${g}, ${b}, ${a}`;
 	  }
 	
 	  getPrettyColor() {}
@@ -338,7 +358,7 @@
 	
 	    this.alpha = 1;
 	    this.fade = 0;
-	    this.color = `${color}, 1)`;
+	    this.color = color;
 	
 	    this.context = context;
 	    this.canvas = canvas;
@@ -432,7 +452,7 @@
 	
 	  render() {
 	    // console.log(this.color);
-	    this.context.fillStyle = this.color + ", 1)";
+	    this.context.fillStyle = this.color;
 	
 	    this.context.beginPath();
 	    this.context.arc(this.x, this.y, this.size, 0, Math.PI * 2, true);
@@ -466,7 +486,7 @@
 	
 	    this.alpha = 1;
 	    this.fade = 0;
-	    this.color = `${color}, 1)`;
+	    this.color = color;
 	
 	    this.context = context;
 	    this.canvas = canvas;
@@ -523,7 +543,7 @@
 	
 	    this.alpha = 1;
 	    this.fade = 0;
-	    this.color = "rgb(255,215,0)";
+	    this.color = "rgb(255,215, 0, 0.95)";
 	
 	    this.context = context;
 	    this.canvas = canvas;
@@ -592,7 +612,7 @@
 	    this.radius = radius;
 	    this.size = 4;
 	    this.shrink = .98 + Math.random() / 1000;
-	    this.color = color + ",1)";
+	    this.color = color;
 	  }
 	
 	  velX() {
@@ -689,7 +709,7 @@
 	  }
 	
 	  render() {
-	    this.context.fillStyle = this.color + ", 1)";
+	    this.context.fillStyle = this.color;
 	
 	    this.context.beginPath();
 	    this.context.arc(this.x, this.y, this.size, 0, Math.PI * 2, true);
@@ -723,7 +743,7 @@
 	    this.radius = radius;
 	    this.size = 5;
 	    this.shrink = .98 + Math.random() / 1000;
-	    this.color = color + ",1)";
+	    this.color = color;
 	  }
 	
 	  velX() {
@@ -765,23 +785,6 @@
 	}
 	
 	module.exports = ParticleChain;
-
-/***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-	const listeners = (ctx, canvas) => {
-	  document.body.style.overflow = "hidden";
-	  ctx.canvas.width = window.innerWidth;
-	  ctx.canvas.height = window.innerHeight;
-	
-	  window.addEventListener("resize", () => {
-	    ctx.canvas.width = window.innerWidth;
-	    ctx.canvas.height = window.innerHeight;
-	  });
-	};
-	
-	module.exports = { listeners };
 
 /***/ }
 /******/ ]);

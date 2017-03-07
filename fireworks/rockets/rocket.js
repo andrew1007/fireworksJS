@@ -10,7 +10,7 @@ class Rocket {
 
     this.alpha = 1;
     this.fade = 0;
-    this.color = `${color}, 1)`;
+    this.color = color
 
     this.context = context
     this.canvas = canvas

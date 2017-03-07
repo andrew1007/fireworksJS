@@ -10,7 +10,7 @@ class RocketStreak {
 
     this.alpha = 1;
     this.fade = 0;
-    this.color = color;
+    this.color = color
 
     this.context = context
     this.canvas = canvas
@@ -49,7 +49,7 @@ class RocketStreak {
 
   render(){
     // console.log(this.color);
-    this.context.fillStyle = this.color + ", 1)";
+    this.context.fillStyle = this.color;
 
     this.context.beginPath();
     this.context.arc(this.x, this.y, this.size, 0, Math.PI * 2, true);
