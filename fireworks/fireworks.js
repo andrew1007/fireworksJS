@@ -479,7 +479,7 @@
 	    this.x = x;
 	    this.y = y;
 	    this.shrink = .999;
-	    this.size = 6;
+	    this.size = 5;
 	
 	    this.resistance = 0.983;
 	    this.gravity = 0.07;
@@ -741,7 +741,7 @@
 	    this.velX = Math.cos(angle) * speed + 0.6;
 	    this.velY = Math.sin(angle) * speed * 0.67;
 	    this.radius = radius;
-	    this.size = 5;
+	    this.size = 4;
 	    this.shrink = .98 + Math.random() / 1000;
 	    this.color = color;
 	  }

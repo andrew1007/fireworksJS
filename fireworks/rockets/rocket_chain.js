@@ -3,7 +3,7 @@ class RocketChain {
     this.x = x
     this.y = y
     this.shrink = .999;
-    this.size = 6;
+    this.size = 5;
 
     this.resistance = 0.983;
     this.gravity = 0.07

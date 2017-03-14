@@ -13,7 +13,7 @@ class ParticleChain {
       this.velX = Math.cos(angle) * speed + 0.6;
       this.velY = Math.sin(angle) * speed * 0.67;
       this.radius = radius
-      this.size = 5
+      this.size = 4
       this.shrink = .98 + Math.random()/1000
       this.color = color
     }
