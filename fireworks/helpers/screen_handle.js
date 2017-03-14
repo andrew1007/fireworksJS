@@ -6,6 +6,8 @@ const listeners = (ctx, canvas) => {
   window.addEventListener("resize", () => {
     ctx.canvas.width  = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
+    ctx.fillStyle = "rgba(55,55,55, 1)";
+    ctx.fillRect(0,0, canvas.width, canvas.height)
   })
 }
 
