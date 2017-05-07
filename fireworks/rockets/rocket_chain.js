@@ -15,7 +15,7 @@ class RocketChain {
     this.context = context
     this.canvas = canvas
     this.velX = Math.random() * 6 - 3;
-    this.velY = -20.5 + Math.random() * 6;
+    this.velY = -20.5 + Math.random() * 4 + (y / 400);
   }
 
   update(){
