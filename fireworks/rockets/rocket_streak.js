@@ -3,7 +3,6 @@ let RocketBaseClass = require('./rocket_base_class')
 class RocketStreak extends RocketBaseClass {
   constructor(x, y, context, canvas, color){
     super(x, y, context, canvas, color)
-    this.shrink = .999;
     this.size = 2.5;
     this.velX = Math.random() * 1 - 1;
   }

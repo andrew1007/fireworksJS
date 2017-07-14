@@ -9,6 +9,9 @@ class ParticleBaseClass {
     this.posY = this.canvas.height
     this.shrink = .980 + Math.random()/1000
     this.color = color
+    this.gravity = 0.1
+    this.size = 4
+    this.angle = (Math.random() / -1) * Math.PI * 2
   }
 
   velX(){

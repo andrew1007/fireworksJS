@@ -26,81 +26,45 @@ class Launch {
     this.particleDefaultCount = 30
   }
 
-  sparkler(xPos, yPos){
+  rockArgs(x, y) {
+    return [x, y, this.context, this.canvas, this.color]
   }
 
   rocketStreamer(xPos, yPos){
-    let rocket = new RocketStreamer
-    (
-      xPos,
-      yPos,
-      this.context,
-      this.canvas,
-      this.color
-    )
+    let rocket = new RocketStreamer(...this.rockArgs(xPos, yPos))
     this.rockets = this.rockets.concat(rocket)
   }
 
   rocketStreak(xPos, yPos){
-    let rocket = new RocketStreak
-    (
-      xPos,
-      yPos,
-      this.context,
-      this.canvas,
-      this.color
-    )
+    let rocket = new RocketStreak(...this.rockArgs(xPos, yPos))
     this.rockets = this.rockets.concat(rocket)
   }
 
   rocketChain(xPos, yPos){
-    let rocket = new RocketChain
-    (
-      xPos,
-      yPos,
-      this.context,
-      this.canvas,
-      this.color
-    )
+    let rocket = new RocketChain(...this.rockArgs(xPos, yPos))
     this.rockets = this.rockets.concat(rocket)
   }
 
   rocketDefault(xPos, yPos){
-    let rocket = new Rocket
-    (
-      xPos,
-      yPos,
-      this.context,
-      this.canvas,
-      this.color
-    )
+    let rocket = new Rocket(...this.rockArgs(xPos, yPos))
     this.rockets = this.rockets.concat(rocket)
   }
 
-  triggerRocketStreak(rng){
-    return rng > this.chanceRocketStreak
-  }
-
-  triggerRocketChain(rng){
-    return rng > this.chanceRocketChain
-  }
-
-  triggerRocketStreamer(rng){
-    return rng > this.chanceRocketStreamer
-  }
-
   addFirework(e){
+    let streamerChance = (rng) => rng > this.chanceRocketStreamer
+    let streakChance = (rng) => rng > this.chanceRocketStreak
+    let chainChance = (rng) => rng > this.chanceRocketChain
     let xPos = this.x;
     let yPos= this.y;
     let rng = Math.random()
     switch(true){
-      case this.triggerRocketStreamer(rng):
+      case streamerChance(rng):
         this.rocketStreamer(xPos, yPos)
         break
-      case this.triggerRocketStreak(rng):
+      case streakChance(rng):
         this.rocketStreak(xPos, yPos)
         break
-      case this.triggerRocketChain(rng):
+      case chainChance(rng):
         this.rocketChain(xPos, yPos)
         break
       default:
@@ -109,10 +73,9 @@ class Launch {
   }
 
   welcomeFireworks(counter){
-    let rng = Math.random()
     switch(counter){
       case 0:
-      this.rocketDefault(this.x, this.y)
+        this.rocketDefault(this.x, this.y)
         break
       case 1:
         this.rocketChain(this.x, this.y)
@@ -127,15 +90,20 @@ class Launch {
   }
 
   getRandomColor(){
-    let r = 80 + Math.round(Math.random() * 150);
-    let g = 80 + Math.round(Math.random() * 150);
-    let b = 80 + Math.round(Math.random() * 150);
+    let randColor = () => 80 + Math.round(Math.random() * 150)
     let a = 1
-    return `rgba(${r}, ${g}, ${b}, ${a}`
+    let color = 'rgba('
+    Array.from(Array(3)).forEach(_ => color += `${randColor()}, `)
+    color += `${a})`
+    return color
   }
 
-  exists(){
-    return this.rockets.length > 0
+  partArgs(firework) {
+    return [firework.x, firework.y, this.context, this.canvas, 5, this.color]
+  }
+
+  pushParticle(object) {
+    this.particles.push(object)
   }
 
   particleCircle(firework, newColor = false){
@@ -143,9 +111,7 @@ class Launch {
     for (let i=0; i < this.particleCircleCount; i++){
       if (newColor) this.color = this.getRandomColor()
       this.particleCount += 45
-      this.particles = this.particles.concat(new ParticleCircle(
-        firework.x, firework.y, this.context, this.canvas, this.color
-      ))
+      this.pushParticle(new ParticleCircle(...this.partArgs(firework)))
     }
   }
 
@@ -153,18 +119,14 @@ class Launch {
     let rng = Math.random()
     for(let i=0; i < this.particleChainCount; i++){
       if (rng > 0.60) this.color = this.getRandomColor()
-      this.particles = this.particles.concat(new ParticleChain(
-        firework.x, firework.y, this.context, this.canvas, 5, this.color
-      ))
+      this.pushParticle(new ParticleChain(...this.partArgs(firework)))
     }
   }
 
   particleDefault(firework, particleCount, newColor = false){
     for(let i=0; i < particleCount; i++){
       if (newColor) this.color = this.getRandomColor()
-      this.particles = this.particles.concat(
-        new ParticleDefault(firework.x, firework.y, this.context, this.canvas, 5, this.color
-      ))
+      this.pushParticle(new ParticleDefault(...this.partArgs(firework)))
     }
   }
 

@@ -5,6 +5,7 @@ class RocketBaseClass {
 
     this.resistance = 0.983;
     this.gravity = 0.07
+    this.shrink = .999;
 
     this.alpha = 1;
     this.fade = 0;
@@ -13,7 +14,7 @@ class RocketBaseClass {
     this.context = context
     this.canvas = canvas
     this.velX = Math.random() * 6 - 3;
-    this.velY = Math.random() * -2 * (y / 320) - 15.5;
+    this.velY = Math.random() * -2 * (y / 320) - 14.5;
   }
 
   update(){
@@ -27,11 +28,7 @@ class RocketBaseClass {
   }
 
   exploded(){
-    if (this.velY >= -Math.random()*3){
-      return true
-    } else{
-      return false
-    }
+    return (this.velY >= -Math.random()*3) ? true : false
   }
 }
 
