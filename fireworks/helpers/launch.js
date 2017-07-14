@@ -140,73 +140,57 @@ class Launch {
 
   particleCircle(firework, newColor = false){
     let rng = Math.random()
-    // let counter = 0
-    // let lessThanCouner = (num) => {
-    //   return counter < num
-    // }
-    // setInterval( () => {
-    //   switch(true){
-    //     case (lessThanCouner(10)):
     for (let i=0; i < this.particleCircleCount; i++){
-      if (newColor){
-        this.color = this.getRandomColor()
-      }
+      if (newColor) this.color = this.getRandomColor()
       this.particleCount += 45
-      this.particles = this.particles.concat(new ParticleCircle(firework.x, firework.y, this.context, this.canvas, this.color))
+      this.particles = this.particles.concat(new ParticleCircle(
+        firework.x, firework.y, this.context, this.canvas, this.color
+      ))
     }
-    //     break
-    //     default:
-    //       clearInterval()
-    //       return
-    //   }
-    //   counter += 1
-    // }, 100)
   }
 
   particleChain(firework){
     let rng = Math.random()
     for(let i=0; i < this.particleChainCount; i++){
-      if (rng > 0.60){
-        this.color = this.getRandomColor()
-      }
-      this.particles = this.particles.concat(new ParticleChain(firework.x, firework.y, this.context, this.canvas, 5, this.color))
+      if (rng > 0.60) this.color = this.getRandomColor()
+      this.particles = this.particles.concat(new ParticleChain(
+        firework.x, firework.y, this.context, this.canvas, 5, this.color
+      ))
     }
   }
 
   particleDefault(firework, particleCount, newColor = false){
     for(let i=0; i < particleCount; i++){
-      if (newColor) {
-        this.color = this.getRandomColor()
-      }
-      this.particles = this.particles.concat(new ParticleDefault(firework.x, firework.y, this.context, this.canvas, 5, this.color))
+      if (newColor) this.color = this.getRandomColor()
+      this.particles = this.particles.concat(
+        new ParticleDefault(firework.x, firework.y, this.context, this.canvas, 5, this.color
+      ))
     }
   }
 
   triggerParticles(){
-    this.rockets.forEach((firework, i) =>{
+    this.rockets.forEach((firework, i) => {
       if (firework.constructor.name === "RocketStreamer"){
-        if (firework.trigger()){
-          this.particleDefault(firework, 20, true)
-        }
+        if (firework.trigger()) this.particleDefault(firework, 20, true)
       }
-    let rng = Math.random()
-      if (firework.exploded()){
-        switch(firework.constructor.name){
-          case "RocketStreak":
-            this.particleCircle(firework)
-          break
-          case "RocketChain":
-            this.particleChain(firework)
-          break
-          case "RocketStreamer":
-            this.particleCircle(firework, true)
-          break
-          case "Rocket":
-            this.particleDefault(firework, 30)
-          break
+      let rng = Math.random()
+        if (firework.exploded()){
+          switch(firework.constructor.name){
+            case "RocketStreak":
+              this.particleCircle(firework)
+            break
+            case "RocketChain":
+              this.particleChain(firework)
+            break
+            case "RocketStreamer":
+              this.particleCircle(firework, true)
+            break
+            case "Rocket":
+              this.particleDefault(firework, 30)
+            break
+          }
+          this.rockets.splice(i, 1)
         }
-        this.rockets.splice(i, 1)
-      }
         firework.render()
         firework.update()
       })
@@ -217,11 +201,9 @@ class Launch {
       if (!particle.exists()) {
         let rng = Math.random()
         if (particle.constructor.name === "ParticleChain"){
-          if (rng > 0.80){
-            this.color = this.getRandomColor()
-          }
-        this.particleDefault(particle, 20)
-      }
+          if (rng > 0.80) this.color = this.getRandomColor()
+          this.particleDefault(particle, 20)
+        }
       this.particles.splice(i, 1)
       this.particleCount -= 1
       }
@@ -236,7 +218,6 @@ class Launch {
     }
     this.triggerParticles()
     this.clearParticles()
-    }
-
+  }
 }
 module.exports = Launch;

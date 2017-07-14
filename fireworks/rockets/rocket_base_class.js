@@ -23,6 +23,7 @@ class RocketBaseClass {
     this.velY += this.gravity;
     this.x += this.velX;
     this.y += this.velY;
+    this.size *= this.shrink
   }
 
   exploded(){

@@ -66,9 +66,7 @@
 	    for (let i = 0; i < 3; i++) {
 	      new Launch(center * (i + 1), canvas.height, ctx, canvas).welcomeFireworks(counter);
 	    }
-	    if (counter == 4) {
-	      clearInterval();
-	    }
+	    if (counter == 4) clearInterval();
 	    counter += 1;
 	  }, 1500);
 	};
@@ -241,44 +239,24 @@
 	
 	  particleCircle(firework, newColor = false) {
 	    let rng = Math.random();
-	    // let counter = 0
-	    // let lessThanCouner = (num) => {
-	    //   return counter < num
-	    // }
-	    // setInterval( () => {
-	    //   switch(true){
-	    //     case (lessThanCouner(10)):
 	    for (let i = 0; i < this.particleCircleCount; i++) {
-	      if (newColor) {
-	        this.color = this.getRandomColor();
-	      }
+	      if (newColor) this.color = this.getRandomColor();
 	      this.particleCount += 45;
 	      this.particles = this.particles.concat(new ParticleCircle(firework.x, firework.y, this.context, this.canvas, this.color));
 	    }
-	    //     break
-	    //     default:
-	    //       clearInterval()
-	    //       return
-	    //   }
-	    //   counter += 1
-	    // }, 100)
 	  }
 	
 	  particleChain(firework) {
 	    let rng = Math.random();
 	    for (let i = 0; i < this.particleChainCount; i++) {
-	      if (rng > 0.60) {
-	        this.color = this.getRandomColor();
-	      }
+	      if (rng > 0.60) this.color = this.getRandomColor();
 	      this.particles = this.particles.concat(new ParticleChain(firework.x, firework.y, this.context, this.canvas, 5, this.color));
 	    }
 	  }
 	
 	  particleDefault(firework, particleCount, newColor = false) {
 	    for (let i = 0; i < particleCount; i++) {
-	      if (newColor) {
-	        this.color = this.getRandomColor();
-	      }
+	      if (newColor) this.color = this.getRandomColor();
 	      this.particles = this.particles.concat(new ParticleDefault(firework.x, firework.y, this.context, this.canvas, 5, this.color));
 	    }
 	  }
@@ -286,9 +264,7 @@
 	  triggerParticles() {
 	    this.rockets.forEach((firework, i) => {
 	      if (firework.constructor.name === "RocketStreamer") {
-	        if (firework.trigger()) {
-	          this.particleDefault(firework, 20, true);
-	        }
+	        if (firework.trigger()) this.particleDefault(firework, 20, true);
 	      }
 	      let rng = Math.random();
 	      if (firework.exploded()) {
@@ -318,9 +294,7 @@
 	      if (!particle.exists()) {
 	        let rng = Math.random();
 	        if (particle.constructor.name === "ParticleChain") {
-	          if (rng > 0.80) {
-	            this.color = this.getRandomColor();
-	          }
+	          if (rng > 0.80) this.color = this.getRandomColor();
 	          this.particleDefault(particle, 20);
 	        }
 	        this.particles.splice(i, 1);
@@ -338,7 +312,6 @@
 	    this.triggerParticles();
 	    this.clearParticles();
 	  }
-	
 	}
 	module.exports = Launch;
 
@@ -353,14 +326,13 @@
 	    super(x, y, context, canvas, color);
 	    this.size = 3;
 	    this.shrink = .999;
+	    this.shapeEquation = Math.PI * 2;
 	  }
 	
 	  render() {
-	    // console.log(this.color);
 	    this.context.fillStyle = this.color;
-	
 	    this.context.beginPath();
-	    this.context.arc(this.x, this.y, this.size, 0, Math.PI * 2, true);
+	    this.context.arc(this.x, this.y, this.size, 0, this.shapeEquation, true);
 	    this.context.closePath();
 	    this.context.fill();
 	
@@ -399,6 +371,7 @@
 	    this.velY += this.gravity;
 	    this.x += this.velX;
 	    this.y += this.velY;
+	    this.size *= this.shrink;
 	  }
 	
 	  exploded() {
@@ -414,43 +387,16 @@
 
 /***/ },
 /* 5 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	class RocketStreak {
+	let RocketBaseClass = __webpack_require__(4);
+	
+	class RocketStreak extends RocketBaseClass {
 	  constructor(x, y, context, canvas, color) {
-	    this.x = x;
-	    this.y = y;
+	    super(x, y, context, canvas, color);
 	    this.shrink = .999;
 	    this.size = 2.5;
-	
-	    this.resistance = 0.983;
-	    this.gravity = 0.07;
-	
-	    this.alpha = 1;
-	    this.fade = 0;
-	    this.color = color;
-	
-	    this.context = context;
-	    this.canvas = canvas;
 	    this.velX = Math.random() * 1 - 1;
-	    this.velY = -20.5 + Math.random() * 4 + y / 400;
-	  }
-	
-	  update() {
-	    this.velX *= this.resistance;
-	    this.velY *= this.resistance;
-	
-	    this.velY += this.gravity;
-	    this.x += this.velX;
-	    this.y += this.velY;
-	  }
-	
-	  exploded() {
-	    if (this.velY >= -Math.random() * 3) {
-	      return true;
-	    } else {
-	      return false;
-	    }
 	  }
 	
 	  randomX() {
@@ -463,6 +409,18 @@
 	    return Math.random() * 5 + 30;
 	  }
 	
+	  streak() {
+	    return this.y + streakY + this.velY, this.size, 0, Math.PI * 2;
+	  }
+	
+	  posX(i) {
+	    return this.x + i * -this.velX * 1 + this.randomX() * i * 0.2;
+	  }
+	
+	  posY(i) {
+	    return this.y + i * 5 + this.velY;
+	  }
+	
 	  render() {
 	    // console.log(this.color);
 	    this.context.fillStyle = this.color;
@@ -470,9 +428,8 @@
 	    this.context.beginPath();
 	    this.context.arc(this.x, this.y, this.size, 0, Math.PI * 2, true);
 	    for (let i = 0; i < 20; i++) {
-	      let streakY = i * 5;
 	      this.context.fillStyle = this.color + `,${1 - i * 0.02}`;
-	      this.context.arc(this.x + i * -this.velX * 1 + this.randomX() * i * 0.2, this.y + streakY + this.velY, this.size, 0, Math.PI * 2, true);
+	      this.context.arc(this.posX(i), this.posY(i), this.size, 0, Math.PI * 2, true);
 	    }
 	    this.context.closePath();
 	    this.context.fill();
@@ -491,43 +448,12 @@
 	
 	class RocketChain extends RocketBaseClass {
 	  constructor(x, y, context, canvas, color) {
-	    this.x = x;
-	    this.y = y;
+	    super(x, y, context, canvas, color);
 	    this.shrink = .999;
 	    this.size = 5;
-	
-	    this.resistance = 0.983;
-	    this.gravity = 0.07;
-	
-	    this.alpha = 1;
-	    this.fade = 0;
-	    this.color = color;
-	
-	    this.context = context;
-	    this.canvas = canvas;
-	    this.velX = Math.random() * 6 - 3;
-	    this.velY = -20.5 + Math.random() * 4 + y / 400;
-	  }
-	
-	  update() {
-	    this.velX *= this.resistance;
-	    this.velY *= this.resistance;
-	
-	    this.velY += this.gravity;
-	    this.x += this.velX;
-	    this.y += this.velY;
-	  }
-	
-	  exploded() {
-	    if (this.velY >= -Math.random() * 3) {
-	      return true;
-	    } else {
-	      return false;
-	    }
 	  }
 	
 	  render() {
-	    // console.log(this.color);
 	    this.context.fillStyle = this.color;
 	
 	    this.context.beginPath();
@@ -543,51 +469,22 @@
 
 /***/ },
 /* 7 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	class RocketStreamer {
+	let RocketBaseClass = __webpack_require__(4);
+	
+	class RocketStreamer extends RocketBaseClass {
 	  constructor(x, y, context, canvas, color) {
-	    this.x = x;
-	    this.y = y;
+	    super(x, y, context, canvas, color);
 	    this.shrink = .995;
 	    this.size = 5;
-	
-	    this.resistance = 0.983;
-	    this.gravity = 0.07;
-	
-	    this.alpha = 1;
-	    this.fade = 0;
 	    this.color = "rgba(255,215, 0, 0.7)";
-	
-	    this.context = context;
-	    this.canvas = canvas;
-	    this.velX = Math.random() * 6 - 3;
-	    this.velY = -20.5 + Math.random() * 4 + y / 400;
-	  }
-	
-	  update() {
-	
-	    this.velX *= this.resistance;
-	    this.velY *= this.resistance;
-	
-	    this.velY += this.gravity;
-	    this.x += this.velX;
-	    this.y += this.velY;
-	    this.size *= this.shrink;
 	  }
 	
 	  trigger() {
 	    let trigger_1 = this.velY > -13 && this.velY < -12.5;
 	    let trigger_2 = this.velY > -8 && this.velY < -7.5;
 	    return trigger_1 || trigger_2;
-	  }
-	
-	  exploded() {
-	    if (this.velY >= -Math.random() * 3) {
-	      return true;
-	    } else {
-	      return false;
-	    }
 	  }
 	
 	  render() {
@@ -607,44 +504,20 @@
 
 /***/ },
 /* 8 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	class ParticleDefault {
+	let ParticleBaseClass = __webpack_require__(11);
+	
+	class ParticleDefault extends ParticleBaseClass {
 	  constructor(x = 0, y = 0, ctx, canvas, radius, color) {
-	    this.x = x;
-	    this.y = y;
+	    super(x, y, ctx, canvas, color);
 	    this.gravity = 0.1;
-	    this.resistance = 0.98;
-	    this.context = ctx;
-	    this.canvas = canvas;
-	    this.posX = this.canvas.width / 2;
-	    this.posY = this.canvas.height;
 	    let angle = Math.random() * Math.PI * 2;
 	    let speed = Math.cos(Math.random() * Math.PI / 2) * (10 * (Math.random() / 2 + 0.5));
 	    this.velX = Math.cos(angle) * speed + 0.6;
 	    this.velY = Math.sin(angle) * speed * 0.80;
 	    this.radius = radius;
 	    this.size = 4;
-	    this.shrink = .98 + Math.random() / 1000;
-	    this.color = color;
-	  }
-	
-	  velX() {
-	    return Math.cos(this.angle) * this.speed;
-	  }
-	
-	  velY() {
-	    return Math.cos(this.angle) * this.speed + this.gravity;
-	  }
-	
-	  update() {
-	    this.velX *= this.resistance;
-	    this.velY *= this.resistance;
-	    this.velY += this.gravity;
-	
-	    this.x += this.velX;
-	    this.y += this.velY;
-	    this.size *= this.shrink;
 	  }
 	
 	  exists() {
@@ -671,47 +544,20 @@
 
 /***/ },
 /* 9 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	class ParticleCircle {
+	let ParticleBaseClass = __webpack_require__(11);
+	
+	class ParticleCircle extends ParticleBaseClass {
 	  constructor(x = 0, y = 0, ctx, canvas, color) {
-	    this.x = x;
-	    this.y = y;
+	    super(x, y, ctx, canvas, color);
 	    this.gravity = 0.03;
-	    this.resistance = 0.98;
-	    this.context = ctx;
-	    this.canvas = canvas;
-	    this.posX = this.canvas.width / 2;
-	    this.posY = this.canvas.height;
 	    let angle = Math.random() * Math.PI * 2;
-	    // let angle = Math.PI * 2;
-	    // let speed = Math.cos(Math.random() * Math.PI / 2) * (10 * (Math.random() / 2 + 0.5))
 	    let speed = 8 + Math.random(2);
 	    this.velX = Math.cos(angle) * speed + 1;
 	    this.velY = Math.sin(angle) * speed * 0.90;
 	    this.radius = 4;
 	    this.size = 4;
-	    this.shrink = .980 + Math.random() / 1000;
-	    // this.shrink = 0
-	    this.color = color;
-	  }
-	
-	  velX() {
-	    return Math.cos(this.angle) * this.speed;
-	  }
-	
-	  velY() {
-	    return Math.cos(this.angle) * this.speed;
-	  }
-	
-	  update() {
-	    this.velX *= this.resistance;
-	    this.velY *= this.resistance;
-	    this.velY += this.gravity;
-	
-	    this.x += this.velX;
-	    this.y += this.velY;
-	    this.size *= this.shrink;
 	  }
 	
 	  exists() {
@@ -738,44 +584,20 @@
 
 /***/ },
 /* 10 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	class ParticleChain {
+	let ParticleBaseClass = __webpack_require__(11);
+	
+	class ParticleChain extends ParticleBaseClass {
 	  constructor(x = 0, y = 0, ctx, canvas, radius, color) {
-	    this.x = x;
-	    this.y = y;
-	    this.resistance = 0.98;
+	    super(x, y, ctx, canvas, color);
 	    this.gravity = 0.1;
-	    this.context = ctx;
-	    this.canvas = canvas;
-	    this.posX = this.canvas.width / 2;
-	    this.posY = this.canvas.height;
 	    let angle = Math.random() / -1 * Math.PI * 2;
 	    let speed = Math.cos(Math.random() * Math.PI / 2) * (10 * (Math.random() / 2 + 0.5)) + 3;
 	    this.velX = Math.cos(angle) * speed + 0.6;
 	    this.velY = Math.sin(angle) * speed * 0.67;
 	    this.radius = radius;
 	    this.size = 4;
-	    this.shrink = .98 + Math.random() / 1000;
-	    this.color = color;
-	  }
-	
-	  velX() {
-	    return Math.cos(this.angle) * this.speed;
-	  }
-	
-	  velY() {
-	    return Math.cos(this.angle) * this.speed + this.gravity;
-	  }
-	
-	  update() {
-	    this.velX *= this.resistance;
-	    this.velY *= this.resistance;
-	    this.velY += this.gravity;
-	
-	    this.x += this.velX;
-	    this.y += this.velY;
-	    this.size *= this.shrink;
 	  }
 	
 	  exists() {
@@ -799,6 +621,44 @@
 	}
 	
 	module.exports = ParticleChain;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	class ParticleBaseClass {
+	  constructor(x, y, ctx, canvas, color) {
+	    this.x = x;
+	    this.y = y;
+	    this.resistance = 0.98;
+	    this.context = ctx;
+	    this.canvas = canvas;
+	    this.posX = this.canvas.width / 2;
+	    this.posY = this.canvas.height;
+	    this.shrink = .980 + Math.random() / 1000;
+	    this.color = color;
+	  }
+	
+	  velX() {
+	    return Math.cos(this.angle) * this.speed;
+	  }
+	
+	  velY() {
+	    return Math.cos(this.angle) * this.speed + this.gravity;
+	  }
+	
+	  update() {
+	    this.velX *= this.resistance;
+	    this.velY *= this.resistance;
+	    this.velY += this.gravity;
+	
+	    this.x += this.velX;
+	    this.y += this.velY;
+	    this.size *= this.shrink;
+	  }
+	}
+	
+	module.exports = ParticleBaseClass;
 
 /***/ }
 /******/ ]);

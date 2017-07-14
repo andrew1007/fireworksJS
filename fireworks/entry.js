@@ -20,9 +20,7 @@ const welcomeRockets = () => {
     for (let i=0; i < 3; i++){
       new Launch(center * (i + 1), canvas.height, ctx, canvas).welcomeFireworks(counter)
     }
-    if (counter == 4){
-      clearInterval()
-    }
+    if (counter == 4) clearInterval()
     counter += 1
   }, 1500)
 }
@@ -57,6 +55,4 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener("click", (e) => {
     triggerRockets(e, 2)
   })
-
-
 })

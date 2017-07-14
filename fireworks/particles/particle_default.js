@@ -1,41 +1,16 @@
-class ParticleDefault {
+let ParticleBaseClass = require('./particle_base_class')
+
+class ParticleDefault extends ParticleBaseClass {
   constructor(x = 0, y = 0, ctx, canvas, radius, color){
-    this.x = x
-    this.y = y
+    super(x, y, ctx, canvas, color)
     this.gravity = 0.1
-    this.resistance = 0.98
-    this.context = ctx
-    this.canvas = canvas
-    this.posX = this.canvas.width / 2
-    this.posY = this.canvas.height
     let angle = Math.random() * Math.PI * 2
     let speed = Math.cos(Math.random() * Math.PI / 2) * (10 * (Math.random() / 2 + 0.5))
     this.velX = Math.cos(angle) * speed + 0.6;
     this.velY = Math.sin(angle) * speed * 0.80;
     this.radius = radius
     this.size = 4
-    this.shrink = .98 + Math.random()/1000
-    this.color = color
   }
-
-  velX(){
-    return Math.cos(this.angle) * this.speed
-  }
-
-  velY(){
-    return Math.cos(this.angle) * this.speed + this.gravity
-  }
-
-  update(){
-    this.velX *= this.resistance
-    this.velY *= this.resistance
-    this.velY += this.gravity
-
-    this.x += this.velX
-    this.y += this.velY
-    this.size *= this.shrink
-  }
-
 
   exists(){
     if (this.size < 1.3){
