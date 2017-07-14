@@ -16,7 +16,7 @@ const welcomeRockets = () => {
     new Launch(center * (i+ 1), canvas.height, ctx, canvas).welcomeFireworks(counter)
   }
   counter += 1
-  setInterval( ()=> {
+  setInterval( () => {
     for (let i=0; i < 3; i++){
       new Launch(center * (i + 1), canvas.height, ctx, canvas).welcomeFireworks(counter)
     }
@@ -34,9 +34,7 @@ const clearScreen = () => {
 const triggerRockets = (e, count) => {
   let xPos = e.clientX;
   let yPos= e.clientY;
-  fireworksArr = fireworksArr.filter( firework => {
-    return firework.exists()
-  })
+  fireworksArr = fireworksArr.filter(firework => firework.exists())
   for (let i = 0; i < count; i++){
     var x = new Launch(xPos, canvas.height, ctx, canvas)
     x.addFirework(e)

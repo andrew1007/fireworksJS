@@ -80,9 +80,7 @@
 	const triggerRockets = (e, count) => {
 	  let xPos = e.clientX;
 	  let yPos = e.clientY;
-	  fireworksArr = fireworksArr.filter(firework => {
-	    return firework.exists();
-	  });
+	  fireworksArr = fireworksArr.filter(firework => firework.exists());
 	  for (let i = 0; i < count; i++) {
 	    var x = new Launch(xPos, canvas.height, ctx, canvas);
 	    x.addFirework(e);
