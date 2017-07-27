@@ -2,6 +2,7 @@
 
 A simulation of fireworks is planned with the following features that will be available to users:
 
+
 - [ ] Select colors or have the option of randomized colors
 - [ ] Click on any position of the canvas to fire off a firework
 
