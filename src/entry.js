@@ -45,7 +45,7 @@ const triggerRockets = (e, count) => {
 document.addEventListener('DOMContentLoaded', () => {
   screenHandle.listeners(ctx, canvas);
   clearScreen()
-  // welcomeRockets();
+  welcomeRockets();
 
   ctx.fillStyle = "rgba(55,55,55, 1)";
   ctx.fillRect(0,0, canvas.width, canvas.height)
