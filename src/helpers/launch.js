@@ -132,26 +132,19 @@ class Launch {
 
   triggerParticles() {
     this.rockets.forEach((firework, i) => {
-      if (firework.constructor.name === "RocketStreamer") {
+      if (firework instanceof RocketStreamer) {
         if (firework.trigger()) this.particleDefault(firework, 20, true)
       }
       let rng = Math.random()
-      console.log(firework.exploded())
       if (firework.exploded()) {
-        console.log('EXPLODED')
-        switch (firework.constructor.name) {
-          case "RocketStreak":
-            this.particleCircle(firework)
-            break
-          case "RocketChain":
-            this.particleChain(firework)
-            break
-          case "RocketStreamer":
-            this.particleCircle(firework, true)
-            break
-          case "Rocket":
-            this.particleDefault(firework, 30)
-            break
+        if (firework instanceof RocketStreak) {
+          this.particleCircle(firework)
+        } else if (firework instanceof RocketChain) {
+          this.particleChain(firework)
+        } else if (firework instanceof RocketStreamer) {
+          this.particleCircle(firework, true)
+        } else {
+          this.particleDefault(firework, 30)
         }
         this.rockets.splice(i, 1)
       }
@@ -164,7 +157,7 @@ class Launch {
     this.particles.forEach((particle, i) => {
       if (!particle.exists()) {
         let rng = Math.random()
-        if (particle.constructor.name === "ParticleChain") {
+        if (particle instanceof ParticleChain) {
           if (rng > 0.80) this.color = this.getRandomColor()
           this.particleDefault(particle, 20)
         }

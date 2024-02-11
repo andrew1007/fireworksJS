@@ -1,5 +1,5 @@
 class RocketBaseClass {
-  constructor(x, y,context, canvas, color){
+  constructor(x, y, context, canvas, color) {
     this.x = x
     this.y = y
 
@@ -17,7 +17,7 @@ class RocketBaseClass {
     this.velY = Math.random() * -2 * (y / 320) - 14.5;
   }
 
-  update(){
+  update() {
     this.velX *= this.resistance;
     this.velY *= this.resistance;
 
@@ -27,8 +27,8 @@ class RocketBaseClass {
     this.size *= this.shrink
   }
 
-  exploded(){
-    return (this.velY >= -Math.random()*3) ? true : false
+  exploded() {
+    return (this.velY >= -Math.random() * 3) ? true : false
   }
 }
 
