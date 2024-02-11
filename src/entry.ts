@@ -1,3 +1,5 @@
+import Screen from "./utils/Screen";
+
 // import {welcomeRockets, clearWelcomeMessage} from './helpers/welcome_fireworks';
 // import {listeners, clearScreen} from './helpers/screen_handle';
 // import Launch from './helpers/launch';
@@ -5,9 +7,11 @@
 const screenHandle = require('./helpers/screen_handle');
 const Launch = require('./helpers/launch');
 
-ctx = canvas.getContext( '2d' );
-canvas = document.getElementById('canvas');
-fireworksArr = [];
+Screen.init()
+console.log(Screen)
+const ctx = Screen.ctx
+const canvas = Screen.canvas
+let fireworksArr: any[] = [];
 
 const welcomeRockets = () => {
   const center = Math.floor(ctx.canvas.width / 4 )
@@ -16,11 +20,11 @@ const welcomeRockets = () => {
     new Launch(center * (i+ 1), canvas.height, ctx, canvas).welcomeFireworks(counter)
   }
   counter += 1
-  setInterval( () => {
+  const int = setInterval( () => {
     for (let i=0; i < 3; i++){
       new Launch(center * (i + 1), canvas.height, ctx, canvas).welcomeFireworks(counter)
     }
-    if (counter == 4) clearInterval()
+    if (counter == 4) clearInterval(int)
     counter += 1
   }, 1500)
 }

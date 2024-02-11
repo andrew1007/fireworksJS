@@ -7,7 +7,7 @@
  * @type {Configuration}
  */
 module.exports = {
-  entry: './src/entry.js',
+  entry: './src/entry.ts',
   output: {
     publicPath: './',
     filename: 'fireworks.js',
@@ -31,6 +31,7 @@ module.exports = {
   },
   devtool: 'source-map',
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx', '.ts'],
+    modules: ['../src', '../node_modules'],
   }
 };
